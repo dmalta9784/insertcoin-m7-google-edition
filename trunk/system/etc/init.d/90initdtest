@@ -1,0 +1,21 @@
+#!/system/bin/sh
+
+BB="busybox"
+
+        if $BB [ -e /sys/class/leds/green/brightness ]; then
+            $BB echo 1 > /sys/class/leds/green/brightness
+
+        elif $BB [ -e /sys/class/leds/button-backlight/brightness ]; then
+            $BB echo 255 > /sys/class/leds/button-backlight/brightness
+        fi
+
+sleep 1
+
+        if $BB [ -e /sys/class/leds/green/brightness ]; then
+            $BB echo 0 > /sys/class/leds/green/brightness
+
+        elif $BB [ -e /sys/class/leds/button-backlight/brightness ]; then
+            $BB echo 0 > /sys/class/leds/button-backlight/brightness
+        fi
+
+done

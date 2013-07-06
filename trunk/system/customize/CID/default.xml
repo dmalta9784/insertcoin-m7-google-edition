@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<customization_form>
+  <BootConfiguration>
+    <BootAnimation animation="/system/customize/resource/Google_bootanimation.zip" />
+  </BootConfiguration>
+</customization_form>

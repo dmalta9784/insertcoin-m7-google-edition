@@ -1,0 +1,186 @@
+#!/system/bin/sh
+#Tweaks & Optimizations 
+sysrw
+
+#######################SQLite database vaccum
+# Log file location
+LOG_FILE=/data/sqlite.log
+
+#Interval between SQLite3 runs, in seconds, 604800=1 week
+RUN_EVERY=604800
+
+# Get the last modify date of the Log file, if the file does not exist, set value to 0
+if [ -e $LOG_FILE ]; then
+    LASTRUN=`stat -t $LOG_FILE | awk '{print $14}'`
+else
+    LASTRUN=0
+fi;
+
+# Get current date in epoch format
+CURRDATE=`date +%s`
+
+# Check the interval
+INTERVAL=$(expr $CURRDATE - $LASTRUN)
+
+# If interval is more than the set one, then run the main script
+if [ $INTERVAL -gt $RUN_EVERY ];
+then
+    if [ -e $LOG_FILE ]; then
+        rm $LOG_FILE;
+    fi;
+        
+    echo "SQLite database VACUUM and REINDEX started at $( date +"%m-%d-%Y %H:%M:%S" )" | tee -a $LOG_FILE;
+
+    for i in `busybox find /d* -iname "*.db"`; do
+        /system/xbin/sqlite3 $i 'VACUUM;';
+        resVac=$?
+        if [ $resVac == 0 ]; then
+            resVac="SUCCESS";
+        else
+            resVac="ERRCODE-$resVac";
+        fi;
+        
+        /system/xbin/sqlite3 $i 'REINDEX;';
+        resIndex=$?
+        if [ $resIndex == 0 ]; then
+            resIndex="SUCCESS";
+        else
+            resIndex="ERRCODE-$resIndex";
+        fi;
+        echo "Database $i:  VACUUM=$resVac  REINDEX=$resIndex" | tee -a $LOG_FILE;
+    done
+      
+    echo "SQLite database VACUUM and REINDEX finished at $( date +"%m-%d-%Y %H:%M:%S" )" | tee -a $LOG_FILE;
+fi;
+echo "SQLite database vaccum completed";
+
+################################## Zipalign /Data ###
+LOG_FILE=/data/zipalign.log
+ZIPALIGNDB=/data/zipalign.db
+
+if [ -e $LOG_FILE ]; then
+	rm $LOG_FILE;
+fi;
+
+if [ ! -f $ZIPALIGNDB ]; then
+	touch $ZIPALIGNDB;
+fi;
+
+echo "Starting Automatic ZipAlign $( date +"%m-%d-%Y %H:%M:%S" )" | tee -a $LOG_FILE
+
+for DIR in /data/app ; do
+  cd $DIR
+  for APK in *.apk ; do
+    if [ $APK -ot $ZIPALIGNDB ] && [ $(grep "$DIR/$APK" $ZIPALIGNDB|wc -l) -gt 0 ] ; then
+      echo "Already checked: $DIR/$APK" | tee -a $LOG_FILE
+    else
+      zipalign -c 4 $APK
+      if [ $? -eq 0 ] ; then
+        echo "Already aligned: $DIR/$APK" | tee -a $LOG_FILE
+        grep "$DIR/$APK" $ZIPALIGNDB > /dev/null || echo $DIR/$APK >> $ZIPALIGNDB
+      else
+        echo "Now aligning: $DIR/$APK" | tee -a $LOG_FILE
+        zipalign -f 4 $APK /cache/$APK
+        busybox mount -o rw,remount /system
+        cp -f -p /cache/$APK $APK
+        busybox rm -f /cache/$APK
+        grep "$DIR/$APK" $ZIPALIGNDB > /dev/null || echo $DIR/$APK >> $ZIPALIGNDB
+      fi
+    fi
+  done
+done
+
+for DIR in /system/app ; do
+  cd $DIR
+  for APK in *.apk ; do
+    if [ $APK -ot $ZIPALIGNDB ] && [ $(grep "$DIR/$APK" $ZIPALIGNDB|wc -l) -gt 0 ] ; then
+      echo "Already checked: $DIR/$APK" | tee -a $LOG_FILE
+    else
+      zipalign -c 4 $APK
+      if [ $? -eq 0 ] ; then
+        echo "Already aligned: $DIR/$APK" | tee -a $LOG_FILE
+        grep "$DIR/$APK" $ZIPALIGNDB > /dev/null || echo $DIR/$APK >> $ZIPALIGNDB
+      else
+        echo "Now aligning: $DIR/$APK" | tee -a $LOG_FILE
+        zipalign -f 4 $APK /cache/$APK
+        busybox mount -o rw,remount /system
+        cp -f -p /cache/$APK $APK
+        busybox rm -f /cache/$APK
+        grep "$DIR/$APK" $ZIPALIGNDB > /dev/null || echo $DIR/$APK >> $ZIPALIGNDB
+      fi
+    fi
+  done
+done
+
+for DIR in /system/framework ; do
+  cd $DIR
+  for APK in *.apk ; do
+    if [ $APK -ot $ZIPALIGNDB ] && [ $(grep "$DIR/$APK" $ZIPALIGNDB|wc -l) -gt 0 ] ; then
+      echo "Already checked: $DIR/$APK" | tee -a $LOG_FILE
+    else
+      zipalign -c 4 $APK
+      if [ $? -eq 0 ] ; then
+        echo "Already aligned: $DIR/$APK" | tee -a $LOG_FILE
+        grep "$DIR/$APK" $ZIPALIGNDB > /dev/null || echo $DIR/$APK >> $ZIPALIGNDB
+      else
+        echo "Now aligning: $DIR/$APK" | tee -a $LOG_FILE
+        zipalign -f 4 $APK /cache/$APK
+        busybox mount -o rw,remount /system
+        cp -f -p /cache/$APK $APK
+        busybox rm -f /cache/$APK
+        grep "$DIR/$APK" $ZIPALIGNDB > /dev/null || echo $DIR/$APK >> $ZIPALIGNDB
+      fi
+    fi
+  done
+done
+
+touch $ZIPALIGNDB
+echo "Automatic ZipAlign finished at $( date +"%m-%d-%Y %H:%M:%S" )" | tee -a $LOG_FILE
+
+
+###################Clean Caches & improve app loading times
+
+rm -f /data/local/*.apk
+rm -f /data/local/tmp/*.apk
+rm -f /data/*.log
+rm -f /data/log/*.log
+rm -f /cache/*.*
+rm -f /cache/recovery/*.*
+rm -f /data/system/dropbox/*.txt
+rm -f /data/backup/pending/*.tmp
+rm -f /data/tombstones/*.*
+
+### Remove cache, tmp, and unused files  ###
+
+rm -f /cache/*.apk
+rm -f /cache/*.tmp
+rm -f /data/dalvik-cache/*.apk
+rm -f /data/dalvik-cache/*.tmp
+	
+echo " ~ Cache cleanup complete ~ ";
+
+########################### Fix permissions###
+
+
+echo "Setting permissions"
+		echo "Setting /app & /framework permissions"
+        for file in /system/app/* /system/framework/* /data/app/*; do
+                chmod 644 $file
+        done
+        
+        echo "Setting init.d permissions"
+        chmod 777 /system/etc/init.d
+        
+        for file in /system/etc/init.d/*; do
+        echo "    setting permissions (777) for $file"
+                chmod 777 $file
+        done
+
+### Quadrant Hack for the Benchmark Noobs ###
+mount -o rw -t tmpfs tmpfs /data/data/com.aurorasoftworks.quadrant.ui.standard
+mount -o rw -t tmpfs tmpfs /data/data/com.aurorasoftworks.quadrant.ui.advanced
+
+# Umount debug filesystem
+
+#umount /sys/kernel/debug   
+#echo "   ~ Tweaks Applied ~  ";

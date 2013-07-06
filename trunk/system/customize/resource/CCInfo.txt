@@ -1,0 +1,5 @@
+﻿Project: M7_UL_JB_STOCK_UI
+SKU: Google SHEP ROM
+ROM Build ID: 537280
+Build ID: 537282; SKU: Google SHEP ROM default; CID: default; MNS: default
+Datetime: 2013/06/10 16:43:52
