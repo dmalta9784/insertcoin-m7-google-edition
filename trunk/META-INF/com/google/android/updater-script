@@ -131,6 +131,7 @@ if
 then
     ui_print("-- Removing Google Mail");
     delete("/system/app/Gmail2.apk");
+	delete("/data/app/com.google.android.gm-1.apk");
 endif;
 
 if
@@ -154,6 +155,8 @@ then
     ui_print("-- Removing Google Now (Search)");
     delete("/system/app/VoiceSearchStub.apk");
     delete_recursive("/system/usr/srec/en-US");
+	delete("/data/app/com.google.android.googlequicksearchbox-1.apk");
+	
 endif;
 
 if
@@ -168,6 +171,7 @@ if
 then
     ui_print("-- Removing Google Hangouts");
     delete("/system/app/Hangouts.apk");
+	delete("/data/app/com.google.android.talk-1.apk");
 endif;
 
 if

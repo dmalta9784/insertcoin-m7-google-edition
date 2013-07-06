@@ -1,6 +1,0 @@
-#!/system/bin/sh
-
-sysctl -p
-
-sync;
-setprop cm.filesystem.ready 1;

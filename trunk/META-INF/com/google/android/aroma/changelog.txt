@@ -15,7 +15,8 @@
 - optimized apks
 - android 4.3 Roboto Condensed Font
 - trimmed /system partition on install
-- AROMA installed
+- AROMA installer
+- optional ODEX ROM in recovery!
 - optionals for G app remove
 - optional lower autobrightness
 - optional keep nfc on when screen off
