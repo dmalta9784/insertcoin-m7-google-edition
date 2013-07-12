@@ -1,0 +1,8 @@
+7
+com.android.chrome
+com.google.android.apps.plus
+com.google.android.googlequicksearchbox
+com.adobe.flashplayer
+com.facebook.katana
+com.twitter.android
+com.dropbox.android
