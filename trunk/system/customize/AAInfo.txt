@@ -1,0 +1,6 @@
+TaskID : 330213
+Project : M7_UL_JB43_STOCK_UI_S
+SKU : Google WWE[1700]
+ROM Ver : 3.06.1700.10
+Customization Id : N/A
+RCMS Id : 65

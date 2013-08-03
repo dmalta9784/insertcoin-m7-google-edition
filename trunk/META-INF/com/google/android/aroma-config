@@ -1,0 +1,176 @@
+﻿ini_set("rom_name", "InsertCoin Vanilla");
+ini_set("rom_version", "3.0.0");
+ini_set("rom_author", "baadnewz");
+ini_set("rom_device", "HTC ONE");
+
+
+splash(2000, "coin");
+
+ini_set("force_colorspace","rgba");
+ini_set("dp","6");
+
+fontresload( "0", "ttf/Roboto-Regular.ttf", "12" );
+fontresload( "1", "ttf/Roboto-Regular.ttf", "18" ); 
+
+viewbox(
+  "Welcome",
+    "\n\n\n\n\n"+
+    "           	You're about to flash\n<b>"+
+    ini_get("rom_name") + "</b> by <b> " + ini_get("rom_author") +  
+    "</b>\n\n\n"+
+    "  Version: <#080>" + ini_get("rom_version") + "</#>\n"+
+    "  Device: <#080>" + ini_get("rom_device") + "</#>\n\n\n"+
+    "Press Next to continue the installation...",
+  "icons/info"
+); 
+
+agreebox(
+  "Terms Of Use",
+  "Please read the InsertCoin Terms of Use ...",
+  "icons/agreement",
+  resread("agreement.txt"),
+  "I Agree with this Terms Of Use...",
+  "Please check the agreement..."
+);
+
+textbox(
+  "Changelog",
+  "InsertCoin Changelog",
+  "icons/info",
+ resread("changelog.txt")
+);
+
+
+selectbox(
+  "Pre-Flash Options",
+  "Please select:",
+  "icons/personalize",
+  "wipe.prop",
+  
+  "Install without wiping","",1,
+  "Perform a full wipe","",0,
+  "Update only","",0
+);
+
+if prop("wipe.prop","selected.0") !="3" then
+
+
+
+selectbox(
+  "Do you want to ODEX ROM?",
+  "Please select:",
+  "icons/personalize",
+  "odex.prop",
+  
+  "No","ROM will remain DEODEXED",1,
+  "Yes","Don't choose these option if you plan to run Kustomizer",0
+);
+
+
+########################HTC Hacks##############################
+
+checkbox(
+  "HTC Hacks",
+  "Please select the HTC hacks you want to install:",
+  "icons/personalize",
+  "htchacks.prop",
+  
+  "Remove 3-DOT Black Bar","make sure you use a kernel with l2m",0,
+  "Disable software rendering","",1,
+  "Disable byte code verification","Speeds up dexoping might cause issues with custom kernels",1,
+  "Disable Fast Dormancy","Uncheck only if you are 100% sure your carrier has FD",0,
+  "Xposed Framework","",0
+);
+
+
+######################################################
+checkbox(
+  "Remove Google Apps",
+  "Please select which Google Apps you want to remove:",
+  "icons/apps",
+  "googleremove.prop",
+
+  "Google Mail",          "",  0,
+  "Google Maps",          "",  0,
+  "Google News",          "",  1,
+  "Google Now (Search)",  "",  0,
+  "Google Plus",          "",  1,
+  "Google Hangouts",      "",  0,
+  "Google TTS",           "",  0,
+  "Google Chrome",        "",  0
+ 
+ );
+ 
+
+
+endif;
+
+#If selected update only, just restore settings from system
+if prop("wipe.prop","selected.0") == "3" then
+    pleasewait("Reading configurations...");
+    setvar("rest_status", resexec("scripts/restore.sh"));
+    if (getvar("rest_status") != "0") then
+	  alert(
+	      "Error",
+	      "Some files from previous configuration are missing\nPlease perform standard installation",
+	      "@alert"
+	  );
+	  back("1");
+    endif;
+endif;
+
+menubox(
+  "InsertCoin Installer",
+  "Ready to install",
+  "@info",
+  "menu.prop",
+  "Install InsertCoin","","@install",
+  "Abort installation","","@default"
+);
+
+if prop("menu.prop","selected")=="2"
+then
+  exit("");
+endif;
+
+setvar("retstatus",
+install(
+  "Installing",
+  "Installing " + ini_get("rom_name") + " " + ini_get("rom_version") + 
+  "...\nPlease wait until it's finished...",
+  "@install")
+);
+
+
+#Save installation config
+resexec("scripts/save.sh");
+
+ini_set("text_next", "Finish");
+
+if getvar("retstatus")=="0" then
+  viewbox(
+   "Installation Completed",
+  "<#080>Congratulations...</#>\n\n"+
+  ini_get("rom_name") + " " + ini_get("rom_version") + " has been installed successfully.\n\n"+
+  "Tap Finish, and Reboot your phone.\n\nThanks.",
+  "@info"
+);
+if
+  confirm(
+      "Reboot",
+      "Reboot Now?",
+      "icons/info",
+      "Yes",
+      "No"
+  )=="yes"
+then
+  reboot("onfinish");
+endif;
+else
+   viewbox("Installation Failed","\n\nInstaller Status: "+ getvar("retstatus"),"@alert");
+endif;
+
+
+
+
+

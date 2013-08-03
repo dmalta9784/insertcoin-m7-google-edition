@@ -1,0 +1,17 @@
+<@center><b><#selectbg_g>License Agreement</#></b>
+
+Your warranty is now void.
+
+I am NOT responsible for bricked devices, dead SD cards, thermonuclear war, or you getting fired because the alarm app failed. Please do some research if you have any concerns about features included in this ROMbefore flashing it! YOU are choosing to make these modifications, and if you point the finger at me for messing up your device, I will laugh at you.
+
+Support is limited. I do this as a hobby in my free time. I'll do my best to help you if you state your problem in clear English, with as much information as you can (what mods you selected, have you wiped, when exactly does the error occur, what type of phone you have (ul, l , ws etc.), what carrier, logcat and so on. The more information you offer, easier for me to help you. If you do not ask for support in clear English and with no information what-so-ever I will ignore your issue!
+
+Leave the self entitled customer attitude at the door. I am under NO obligation what-so-ever to do anything for you. If I do it is because I like helping people. Using custom work published on XDA is not a right, it is a privilege.
+
+NO Requests! When I work on InsertCoin I have in mind that I have to satisfy all users to a decent level. What works for me might not work for you and vice versa . I'm not your personal ROM developer and it is not my job nor my intention to make everybody happy.
+
+Do not come here asking "Hey mate, X rom has that awesome feature and if you don't implement it in your rom, I'll <insert whatever here>!" You flashed this ROM because you liked it at some point, if that change please stop using it.
+
+Suggestions for improvements are always welcomed. As long as they are well documented and as long as you understand that NOT everything is possible.
+
+NO ETAs! While I do my best to constantly work on the ROM to improve, fix and add new features, again this is a hobby! There are periods when due real-life issues I can't spend too much time for InsertCoin! If this becomes an obligation passion fades and I might stop cooking the ROM 
