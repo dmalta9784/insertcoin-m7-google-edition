@@ -125,6 +125,23 @@ then
 
 endif;
 
+if 
+    file_getprop("/tmp/aroma-data/htchacks.prop","item.0.6") == "1"
+then
+    ui_print("-- Installing Blue Circle % Battery");
+    package_extract_dir("additions/htchacks/battery", "/system");
+
+endif;
+
+if 
+    file_getprop("/tmp/aroma-data/htchacks.prop","item.0.7") == "1"
+then
+    ui_print("-- Installing Volume Wake");
+    package_extract_dir("additions/htchacks/volwake", "/system");
+
+endif;
+
+
 
 #######################GAPPS REMOVE################################
 

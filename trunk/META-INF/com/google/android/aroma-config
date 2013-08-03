@@ -1,5 +1,5 @@
 ﻿ini_set("rom_name", "InsertCoin Vanilla");
-ini_set("rom_version", "3.0.0");
+ini_set("rom_version", "3.0-1");
 ini_set("rom_author", "baadnewz");
 ini_set("rom_device", "HTC ONE");
 
@@ -79,7 +79,9 @@ checkbox(
   "Disable software rendering","",1,
   "Disable byte code verification","Speeds up dexoping might cause issues with custom kernels",1,
   "Disable Fast Dormancy","Uncheck only if you are 100% sure your carrier has FD",0,
-  "Xposed Framework","",0
+  "Xposed Framework","",0,
+  "Circle Blue % Battery","",0,
+  "Volume Wake","",1
 );
 
 
