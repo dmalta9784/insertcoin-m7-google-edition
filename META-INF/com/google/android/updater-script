@@ -1,0 +1,348 @@
+#
+# Updater-script for IC
+#
+
+##############International/AT&T/T-Mobile HTC One###############
+
+package_extract_dir("tools", "/tmp");
+set_perm(0, 0, 0777, "/tmp/mkfs.ext4");
+set_perm(0, 0, 0777, "/tmp/tune2fs.ext4");
+set_perm(0, 0, 0777, "/tmp/fsck.ext4");
+
+if
+    file_getprop("/tmp/aroma-data/wipe.prop","selected.0") == "2"
+then
+set_progress(0.01);
+    ui_print("@Executing Full Wipe");
+    ui_print("-- Erasing & formatting /cache as EXT4");
+    assert(unmount("/cache") || ui_print("(Cache is unmounted already)"));
+	run_program("/tmp/fsck.ext4", "-fy", "/dev/block/mmcblk0p36");
+    run_program("/tmp/mkfs.ext4", "-O", "^ext_attr,^has_journal,^huge_file", "-L", "CACHE", "-b", "4096", "-m", "0", "-F", "/dev/block/mmcblk0p36");
+    run_program("/tmp/tune2fs.ext4", "-c", "1", "-m", "0", "-o", "journal_data_writeback", "/dev/block/mmcblk0p36");
+    run_program("/tmp/fsck.ext4", "-Dfy", "/dev/block/mmcblk0p36");
+    run_program("/sbin/sleep", "2");
+set_progress(0.02);
+	ui_print("-- Erasing & formatting /system as EXT4");
+    assert(unmount("/system") || ui_print("(System is unmounted already)"));
+	run_program("/tmp/fsck.ext4", "-fy", "/dev/block/mmcblk0p35");
+    run_program("/tmp/mkfs.ext4", "-O", "^ext_attr,^has_journal,^huge_file", "-L", "SYSTEM", "-b", "4096", "-m", "0", "-F", "/dev/block/mmcblk0p35");
+	run_program("/tmp/tune2fs.ext4", "-c", "1", "-m", "0", "-o", "journal_data_writeback", "/dev/block/mmcblk0p35");
+	run_program("/tmp/fsck.ext4", "-Dfy", "/dev/block/mmcblk0p35");
+    run_program("/sbin/sleep", "2");
+set_progress(0.03);
+    ui_print("-- Erasing & formatting /data as EXT4");
+    assert(mount("ext4", "EMMC", "/dev/block/mmcblk0p37", "/data") || ui_print("(Data is mounted already)"));
+    package_extract_file("tools/wipe.sh", "/tmp/wipe.sh");
+    set_perm(0, 0, 0777, "/tmp/wipe.sh");
+    run_program("/tmp/wipe.sh");
+
+set_progress(0.04);
+
+    ui_print("-- Removing system files from SD card");
+    delete_recursive("/sdcard/.android_secure");
+    delete_recursive("/sdcard/.bookmark_thumb1");
+    delete_recursive("/sdcard/.data");
+    delete_recursive("/sdcard/Android");
+    delete_recursive("/sdcard/bugreports");
+    delete_recursive("/sdcard/LazyList");
+    delete_recursive("/sdcard/LOST.DIR");
+    delete_recursive("/sdcard/tmp");
+    run_program("/sbin/sleep", "2");
+set_progress(0.05);
+    ui_print("-- Checking filesystems for errors");
+    run_program("/sbin/e2fsck", "-p", "/dev/block/mmcblk0p35");
+    run_program("/sbin/e2fsck", "-p", "/dev/block/mmcblk0p36");
+    run_program("/sbin/e2fsck", "-p", "/dev/block/mmcblk0p37");
+    run_program("/sbin/sleep", "2");
+endif;
+
+##########################Installation##########################
+
+ui_print("@Installing ROM");
+show_progress(0.07, 9);
+ui_print("-- Writing Data");
+assert(mount("ext4", "EMMC", "/dev/block/mmcblk0p37", "/data") || ui_print("(data is mounted already)"));
+package_extract_dir("data", "/data");
+
+show_progress(0.7,1380);
+assert(unmount("/system") || ui_print("(System is unmounted already)"));
+run_program("/tmp/fsck.ext4", "-fy", "/dev/block/mmcblk0p35");
+run_program("/tmp/mkfs.ext4", "-O", "^ext_attr,^has_journal,^huge_file", "-L", "SYSTEM", "-b", "4096", "-m", "0", "-F", "/dev/block/mmcblk0p35");
+run_program("/tmp/tune2fs.ext4", "-c", "1", "-m", "0", "-o", "journal_data_writeback", "/dev/block/mmcblk0p35");
+run_program("/tmp/fsck.ext4", "-Dfy", "/dev/block/mmcblk0p35");
+run_program("/sbin/sleep", "2");
+ui_print("-- Writing System");
+assert(mount("ext4", "EMMC", "/dev/block/mmcblk0p35", "/system") || ui_print("(system is mounted already)"));
+package_extract_dir("system", "/system");
+
+
+#########################Begin of AROMA#########################
+
+#########################HTC Hacks##############################
+
+
+if
+    file_getprop("/tmp/aroma-data/htchacks.prop","item.0.1") == "1"
+then
+    ui_print("-- Removing 3-DOT Black Bar");
+    package_extract_file("additions/htchacks/menu/menu.sh", "/tmp/menu.sh");
+    set_perm(0, 0, 0777, "/tmp/menu.sh");
+    run_program("/tmp/menu.sh");
+    delete("/tmp/menu.sh");
+endif;
+
+
+if
+    file_getprop("/tmp/aroma-data/htchacks.prop","item.0.2") == "1"
+then
+    ui_print("-- Disabling Software Rendering");
+    package_extract_dir("additions/htchacks/gpu", "/system");
+endif;
+
+if
+    file_getprop("/tmp/aroma-data/htchacks.prop","item.0.3") == "1"
+then
+    ui_print("-- Disable byte code verification");
+	package_extract_file("additions/htchacks/disablebytecode/byte.sh", "/tmp/byte.sh");
+	set_perm(0, 0, 0777, "/tmp/byte.sh");
+    run_program("/tmp/byte.sh");
+endif;
+
+if
+    file_getprop("/tmp/aroma-data/htchacks.prop","item.0.4") == "1"
+then
+    ui_print("-- Disabling Fastdormancy");
+    package_extract_file("additions/htchacks/dormancy/dormancy.sh", "/tmp/dormancy.sh");
+	set_perm(0, 0, 0777, "/tmp/dormancy.sh");
+    run_program("/tmp/dormancy.sh");
+endif;
+
+if 
+    file_getprop("/tmp/aroma-data/htchacks.prop","item.0.5") == "1"
+then
+    ui_print("-- Installing Xposed Framework and App");
+    package_extract_dir("additions/htchacks/xposed", "/system");
+
+endif;
+
+
+#######################GAPPS REMOVE################################
+
+
+if
+    file_getprop("/tmp/aroma-data/googleremove.prop","item.0.1") == "1"
+then
+    ui_print("-- Removing Google Mail");
+    delete("/data/app/com.google.android.gm-1.apk");
+endif;
+
+if
+    file_getprop("/tmp/aroma-data/googleremove.prop","item.0.2") == "1"
+then
+    ui_print("-- Removing Google Maps");
+    delete("/data/app/com.google.android.apps.maps-1.apk");
+    delete("/data/app/com.google.android.street-1.apk");
+endif;
+
+if
+    file_getprop("/tmp/aroma-data/googleremove.prop","item.0.3") == "1"
+then
+    ui_print("-- Removing Google News");
+    delete("/system/app/GenieWidget.apk");
+endif;
+
+if
+    file_getprop("/tmp/aroma-data/googleremove.prop","item.0.4") == "1"
+then
+    ui_print("-- Removing Google Now (Search)");
+    delete("/data/app/com.google.android.googlequicksearchbox-1.apk");
+    delete("/system/app/VoiceSearchStub.apk");
+    delete_recursive("/system/usr/srec/en-US");
+endif;
+
+if
+    file_getprop("/tmp/aroma-data/googleremove.prop","item.0.5") == "1"
+then
+    ui_print("-- Removing Google Plus");
+    delete("/data/app/com.google.android.apps.plus-1.apk");
+endif;
+
+if
+    file_getprop("/tmp/aroma-data/googleremove.prop","item.0.6") == "1"
+then
+    ui_print("-- Removing Google Hangouts");
+    delete("/data/app/com.google.android.talk-1.apk");
+endif;
+
+if
+    file_getprop("/tmp/aroma-data/googleremove.prop","item.0.7") == "1"
+then
+    ui_print("-- Removing Google TTS");
+    delete("/system/app/GoogleTTS.apk");
+    delete("/system/lib/libspeexwrapper.so");
+    delete_recursive("/system/tts");
+endif;
+
+if
+    file_getprop("/tmp/aroma-data/googleremove.prop","item.0.8") == "1"
+then
+    ui_print("-- Removing Google Chrome");
+    delete("/data/app/com.android.chrome-1.apk");
+endif;
+
+
+
+
+##########################VRTHEME###############################
+
+#ui_print("@Extracting VRTheme");
+#package_extract_dir("tools/vrtheme", "/sdcard/vrtheme");
+#set_perm(0, 0, 0755, "/sdcard/vrtheme/installtheme.sh");
+#set_perm(0, 0, 0755, "/sdcard/vrtheme/zip");
+#set_perm(0, 0, 0755, "/sdcard/vrtheme/cleanup.sh");
+#set_perm(0, 0, 0755, "/sdcard/vrtheme/zipalign");
+
+#########################HTC HACK VR THEME ##############################################
+
+
+##########################VRTHEME-APPLY###############################
+
+#ui_print("@Applying Theme");
+#run_program("/sdcard/vrtheme/installtheme.sh");
+#ui_print("@Cleaning VRTheme");
+#run_program("/sdcard/vrtheme/cleanup.sh");
+
+##########################End of AROMA##########################
+
+#######################Creating Symlinks########################
+
+ui_print("@Symlinking and permissions");
+
+set_progress(0.9);
+ui_print("-- Creating toolbox symlinks");
+symlink("toolbox", "/system/bin/cat", "/system/bin/cmp",
+        "/system/bin/date", "/system/bin/dd", "/system/bin/dmesg",
+        "/system/bin/getevent", "/system/bin/getprop", "/system/bin/hd",
+        "/system/bin/id", "/system/bin/ifconfig", "/system/bin/iftop",
+        "/system/bin/insmod", "/system/bin/ioctl", "/system/bin/ionice",
+        "/system/bin/kill", "/system/bin/log", "/system/bin/lsmod",
+        "/system/bin/nandread", "/system/bin/netstat",
+        "/system/bin/newfs_msdos", "/system/bin/notify", "/system/bin/printenv",
+        "/system/bin/ps", "/system/bin/renice",
+        "/system/bin/rmdir", "/system/bin/rmmod", "/system/bin/route",
+        "/system/bin/schedtop", "/system/bin/sendevent",
+        "/system/bin/setconsole", "/system/bin/setprop", "/system/bin/sleep",
+        "/system/bin/smd", "/system/bin/start", "/system/bin/stop",
+        "/system/bin/sync", "/system/bin/top", "/system/bin/uptime",
+        "/system/bin/vmstat", "/system/bin/watchprops",
+        "/system/bin/wipe");
+	
+ui_print("-- Creating additional symlinks");
+symlink("/system/bin/mksh", "/system/bin/sh");
+symlink("/system/fonts/Roboto-Regular.ttf","/system/fonts/DroidSans.ttf");
+symlink("/system/fonts/Roboto-Bold.ttf","/system/fonts/DroidSans-Bold.ttf");
+symlink("/system/lib/modules/moc_crypto.ko.3.4.10","/system/lib/modules/moc_crypto.ko");
+symlink("/system/lib/modules/moc_platform_mod.ko.3.4.10","/system/lib/modules/moc_platform_mod.ko");
+symlink("/system/xbin/ifconfig","/system/xbin/bb/ifconfig");
+symlink("/system/xbin/route","/system/xbin/bb/route");
+
+ui_print("-- Installing busybox");
+set_perm(0, 1000, 0755, "/system/xbin/busybox");
+run_program("/system/xbin/busybox", "--install", "-s", "/system/xbin");
+
+#######################Setting Permissions######################
+
+set_progress(0.93);
+ui_print("-- Setting permissions");
+set_perm_recursive(0, 0, 0755, 0644, "/system");
+set_perm_recursive(0, 2000, 0755, 0755, "/system/bin");
+set_perm(0, 1000, 0750, "/system/bin/iptables");
+set_perm(0, 3003, 02750, "/system/bin/netcfg");
+set_perm(0, 3004, 02755, "/system/bin/ping");
+set_perm(0, 2000, 06755, "/system/bin/reboot");
+set_perm(0, 2000, 06750, "/system/bin/run-as");
+set_perm(1000, 1000, 0755, "/system/bin/sysro");
+set_perm(1000, 1000, 0755, "/system/bin/sysrw");
+set_perm(0, 1000, 0750, "/system/bin/tc");
+set_perm_recursive(1002, 1002, 0755, 0440, "/system/etc/bluetooth");
+set_perm(0, 0, 0755, "/system/etc/bluetooth");
+set_perm(0, 0, 0644, "/system/etc/bluetooth/a2dp_avrcp.conf");
+set_perm(1000, 1000, 0640, "/system/etc/bluetooth/auto_pairing.conf");
+set_perm(3002, 3002, 0444, "/system/etc/bluetooth/blacklist.conf");
+set_perm(1002, 1002, 0440, "/system/etc/dbus.conf");
+set_perm(1014, 2000, 0550, "/system/etc/dhcpcd/dhcpcd-run-hooks");
+set_perm(1000, 3003, 0640, "/system/etc/gps.conf");
+set_perm(0, 0, 0400, "/system/etc/hsml.key");
+#set_perm(0, 2000, 0550, "/system/etc/init.goldfish.sh");
+set_perm_recursive(0, 0, 0755, 0555, "/system/etc/ppp");
+set_perm_recursive(0, 2000, 0755, 0755, "/system/etc/init.d");
+set_perm_recursive(0, 2000, 0755, 0644, "/system/vendor");
+set_perm_recursive(0, 0, 0755, 0644, "/system/vendor/firmware");
+set_perm(0, 2000, 0755, "/system/vendor/firmware");
+set_perm_recursive(0, 0, 0755, 0644, "/system/vendor/lib");
+set_perm(0, 2000, 0755, "/system/vendor/lib");
+set_perm_recursive(0, 2000, 0755, 0644, "/system/vendor/lib/drm");
+set_perm(0, 0, 0644, "/system/vendor/lib/drm/libdrmwvmplugin.so");
+set_perm(0, 0, 0644, "/system/vendor/pittpatt/models/detection/multi_pose_face_landmark_detectors.7/left_eye-y0-yi45-p0-pi45-r0-ri20.lg_32/full_model.bin");
+set_perm(0, 0, 0644, "/system/vendor/pittpatt/models/detection/multi_pose_face_landmark_detectors.7/nose_base-y0-yi45-p0-pi45-r0-ri20.lg_32/full_model.bin");
+set_perm(0, 0, 0644, "/system/vendor/pittpatt/models/detection/multi_pose_face_landmark_detectors.7/right_eye-y0-yi45-p0-pi45-r0-ri20.lg_32-2/full_model.bin");
+set_perm(0, 0, 0644, "/system/vendor/pittpatt/models/detection/yaw_roll_face_detectors.6/head-y0-yi45-p0-pi45-r0-ri30.4a-v24/full_model.bin");
+set_perm(0, 0, 0644, "/system/vendor/pittpatt/models/detection/yaw_roll_face_detectors.6/head-y0-yi45-p0-pi45-rn30-ri30.5-v24/full_model.bin");
+set_perm(0, 0, 0644, "/system/vendor/pittpatt/models/detection/yaw_roll_face_detectors.6/head-y0-yi45-p0-pi45-rp30-ri30.5-v24/full_model.bin");
+set_perm(0, 0, 0644, "/system/vendor/pittpatt/models/recognition/face.face.y0-y0-22-b-N/full_model.bin");
+set_perm(0, 0, 0644, "/system/vendor/tmo_cm/demoutil");
+set_perm_recursive(0, 2000, 0755, 0755, "/system/xbin");
+set_perm(0, 0, 06755, "/system/xbin/su");
+set_perm(1000, 1000, 0771, "/data");
+set_perm_recursive(1000, 1000, 0771, 0644, "/data/app");
+
+######################Kernel Installation#######################
+
+ui_print("@Installing Kernel");
+assert(package_extract_file("boot.img", "/tmp/boot.img"),
+run_program("/sbin/dd", "if=/tmp/boot.img", "of=/dev/block/mmcblk0p33"));
+
+
+########################Odexing Process#########################
+
+if
+    file_getprop("/tmp/aroma-data/odex.prop","selected.0") == "2"
+then
+package_extract_file("tools/busybox", "/tmp/busybox");
+set_perm(0, 0, 0777, "/tmp/busybox");
+package_extract_file("tools/dexopt-wrapper", "/tmp/dexopt-wrapper");
+set_perm(0, 0, 0777, "/tmp/dexopt-wrapper");
+package_extract_file("tools/zip", "/tmp/zip");
+set_perm(0, 0, 0777, "/tmp/zip");
+package_extract_file("tools/odex.sh", "/tmp/odex.sh");
+set_perm(0, 0, 0777, "/tmp/odex.sh"); 
+ui_print("@Starting ODEX process. It might take a while");
+assert(run_program("/tmp/odex.sh"));
+run_program("/sbin/sleep", "2");
+endif; 
+########################Cleaning Process########################
+
+    ui_print("@Erasing Cache & Dalvik-Cache");
+    assert(unmount("/cache") || ui_print("(cache is unmounted already)"));
+    format("ext4", "EMMC", "/dev/block/mmcblk0p36", "0");
+    delete_recursive("/data/dalvik-cache");
+    delete_recursive("/data/resource-cache");
+
+###########################fstrim###############################
+
+package_extract_file("tools/fstrim", "/tmp/fstrim");
+set_perm(0, 0, 0777, "/tmp/fstrim");
+ui_print("@Running FSTRIM might take a while");
+run_program("/tmp/fstrim", "-v", "/system");
+#run_program("/tmp/fstrim", "-v", "/data");
+run_program("/sbin/sleep", "2");
+
+###########################Unmounting###########################
+
+assert(unmount("/data") || ui_print("(data is unmounted already)"));
+assert(unmount("/system") || ui_print("(system is unmounted already)"));
+set_progress(1.0);
+ui_print("");
+ui_print("Installation Complete!");
+run_program("/sbin/busybox", "cp", "/tmp/recovery.log", "/sdcard/recovery.log");
+run_program("/sbin/sleep", "5");

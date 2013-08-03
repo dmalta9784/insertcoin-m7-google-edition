@@ -1,0 +1,185 @@
+#!/system/bin/sh
+#Tweaks & Optimizations 
+sysrw
+
+
+###################################Fstrim#######################################
+FS_LOGFILE=/data/fstrim.log
+
+echo "fstrim started at $( date +"%m-%d-%Y %H:%M:%S" )" | tee -a $FS_LOGFILE;
+
+fstrim -v /cache | tee -a $FS_LOGFILE;
+fstrim -v /data | tee -a $FS_LOGFILE;
+fstrim -v /system | tee -a $FS_LOGFILE
+
+echo "fstrim finished at $( date +"%m-%d-%Y %H:%M:%S" )" | tee -a $FS_LOGFILE;
+
+###################################SQLite database vaccum#######################3
+# Log file location
+LOG_FILE=/data/sqlite.log
+
+#Interval between SQLite3 runs, in seconds, 604800=1 week
+RUN_EVERY=604800
+
+# Get the last modify date of the Log file, if the file does not exist, set value to 0
+if [ -e $LOG_FILE ]; then
+    LASTRUN=`stat -t $LOG_FILE | awk '{print $14}'`
+else
+    LASTRUN=0
+fi;
+
+# Get current date in epoch format
+CURRDATE=`date +%s`
+
+# Check the interval
+INTERVAL=$(expr $CURRDATE - $LASTRUN)
+
+# If interval is more than the set one, then run the main script
+if [ $INTERVAL -gt $RUN_EVERY ];
+then
+    if [ -e $LOG_FILE ]; then
+        rm $LOG_FILE;
+    fi;
+        
+    echo "SQLite database VACUUM and REINDEX started at $( date +"%m-%d-%Y %H:%M:%S" )" | tee -a $LOG_FILE;
+
+    for i in `busybox find /d* -iname "*.db"`; do
+        /system/xbin/sqlite3 $i 'VACUUM;';
+        resVac=$?
+        if [ $resVac == 0 ]; then
+            resVac="SUCCESS";
+        else
+            resVac="ERRCODE-$resVac";
+        fi;
+        
+        /system/xbin/sqlite3 $i 'REINDEX;';
+        resIndex=$?
+        if [ $resIndex == 0 ]; then
+            resIndex="SUCCESS";
+        else
+            resIndex="ERRCODE-$resIndex";
+        fi;
+        echo "Database $i:  VACUUM=$resVac  REINDEX=$resIndex" | tee -a $LOG_FILE;
+    done
+      
+    echo "SQLite database VACUUM and REINDEX finished at $( date +"%m-%d-%Y %H:%M:%S" )" | tee -a $LOG_FILE;
+fi;
+echo "SQLite database vaccum completed";
+
+################################## Zipalign /Data ####################################################
+ZIP_LOGFILE=/data/zipalign.log
+ZIPALIGNDB=/data/zipalign.db
+
+if [ -e $ZIP_LOGFILE ]; then
+	rm $ZIP_LOGFILE;
+fi;
+
+if [ ! -f $ZIPALIGNDB ]; then
+	touch $ZIPALIGNDB;
+fi;
+
+echo "Starting Automatic ZipAlign $( date +"%m-%d-%Y %H:%M:%S" )" | tee -a $ZIP_LOGFILE
+
+for DIR in /data/app ; do
+  cd $DIR
+  for APK in *.apk ; do
+    if [ $APK -ot $ZIPALIGNDB ] && [ $(grep "$DIR/$APK" $ZIPALIGNDB|wc -l) -gt 0 ] ; then
+      echo "Already checked: $DIR/$APK" | tee -a $ZIP_LOGFILE
+    else
+      zipalign -c 4 $APK
+      if [ $? -eq 0 ] ; then
+        echo "Already aligned: $DIR/$APK" | tee -a $ZIP_LOGFILE
+        grep "$DIR/$APK" $ZIPALIGNDB > /dev/null || echo $DIR/$APK >> $ZIPALIGNDB
+      else
+        echo "Now aligning: $DIR/$APK" | tee -a $ZIP_LOGFILE
+        zipalign -f 4 $APK /cache/$APK
+        busybox mount -o rw,remount /system
+        cp -f -p /cache/$APK $APK
+        busybox rm -f /cache/$APK
+        grep "$DIR/$APK" $ZIPALIGNDB > /dev/null || echo $DIR/$APK >> $ZIPALIGNDB
+      fi
+    fi
+  done
+done
+
+################################## Zipalign /system ####################################################
+for DIR in /system/app ; do
+  cd $DIR
+  for APK in *.apk ; do
+    if [ $APK -ot $ZIPALIGNDB ] && [ $(grep "$DIR/$APK" $ZIPALIGNDB|wc -l) -gt 0 ] ; then
+      echo "Already checked: $DIR/$APK" | tee -a $ZIP_LOGFILE
+    else
+      zipalign -c 4 $APK
+      if [ $? -eq 0 ] ; then
+        echo "Already aligned: $DIR/$APK" | tee -a $ZIP_LOGFILE
+        grep "$DIR/$APK" $ZIPALIGNDB > /dev/null || echo $DIR/$APK >> $ZIPALIGNDB
+      else
+        echo "Now aligning: $DIR/$APK" | tee -a $ZIP_LOGFILE
+        zipalign -f 4 $APK /cache/$APK
+        busybox mount -o rw,remount /system
+        cp -f -p /cache/$APK $APK
+        busybox rm -f /cache/$APK
+        grep "$DIR/$APK" $ZIPALIGNDB > /dev/null || echo $DIR/$APK >> $ZIPALIGNDB
+      fi
+    fi
+  done
+done
+
+for DIR in /system/framework ; do
+  cd $DIR
+  for APK in *.apk ; do
+    if [ $APK -ot $ZIPALIGNDB ] && [ $(grep "$DIR/$APK" $ZIPALIGNDB|wc -l) -gt 0 ] ; then
+      echo "Already checked: $DIR/$APK" | tee -a $ZIP_LOGFILE
+    else
+      zipalign -c 4 $APK
+      if [ $? -eq 0 ] ; then
+        echo "Already aligned: $DIR/$APK" | tee -a $ZIP_LOGFILE
+        grep "$DIR/$APK" $ZIPALIGNDB > /dev/null || echo $DIR/$APK >> $ZIPALIGNDB
+      else
+        echo "Now aligning: $DIR/$APK" | tee -a $ZIP_LOGFILE
+        zipalign -f 4 $APK /cache/$APK
+        busybox mount -o rw,remount /system
+        cp -f -p /cache/$APK $APK
+        busybox rm -f /cache/$APK
+        grep "$DIR/$APK" $ZIPALIGNDB > /dev/null || echo $DIR/$APK >> $ZIPALIGNDB
+      fi
+    fi
+  done
+done
+
+touch $ZIPALIGNDB
+echo "Automatic ZipAlign finished at $( date +"%m-%d-%Y %H:%M:%S" )" | tee -a $ZIP_LOGFILE
+
+
+########################### Fix permissions###########################################
+
+
+echo "Setting permissions"
+		echo "Setting /app & /framework permissions"
+        for file in /system/app/* /system/framework/* /data/app/*; do
+                chmod 644 $file
+        done
+        
+        echo "Setting init.d permissions"
+        chmod 755 /system/etc/init.d
+        
+        for file in /system/etc/init.d/*; do
+        echo "    setting permissions (755) for $file"
+                chmod 755 $file
+        done
+echo " ~ Permissions fixed ~ "
+
+###########################################Umount debug filesystem#########################
+umount /sys/kernel/debug   
+echo " ~ Debug unmounted ~ "
+###########################################Media Server Kill ##############################
+killall -9 android.process.media
+killall -9 mediaserver
+echo " ~ Media server killed~ "
+###########################################Run sysctl  ####################################
+sync
+sysctl -p
+sync 
+echo " ~ sysctl ran ~ "
+##########################################yell all is done#################################
+echo "Insertcoin Tweaks Applied!"
