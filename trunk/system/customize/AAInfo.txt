@@ -1,6 +1,0 @@
-TaskID : 324948
-Project : M7_UL_JB_STOCK_UI
-SKU : Google WWE[1700]
-ROM Ver : 2.14.1700.15
-Customization Id : 537302
-RCMS Id : 28
