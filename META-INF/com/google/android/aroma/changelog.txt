@@ -1,6 +1,23 @@
 3.0.0
-- android 4.3
-- base 3.06.1700.1
+- android 4.3 base 3.06.1700.1 props graffixnyc
+- unsercured boot.img
+- rooted with SuperSu
+- ramdisk tweaks
+- persistent ADB enabled
+- battery life, performance and memory improvements
+- sysrw / ro binaries; system is mounted RW
+- init.d support
+- stripped debugging 
+- apks: stripped debugging code and optimized
+- advanced power menu
+- optional disable ugly 3-dot black bar (use only if you have kernel w/ l2m)
+- optional volume wake
+- optional blue circle % battery
+- optional xposed framework
+- SQL DB vacuum
+- zipaligned on boot
+- fstrim on boon
+- many many more
 2.0
 - rebuild from scratch
 - based on dstroy12 cwm dump
