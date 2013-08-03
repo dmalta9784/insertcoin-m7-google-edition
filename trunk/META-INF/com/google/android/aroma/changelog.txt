@@ -14,9 +14,12 @@
 - optional volume wake
 - optional blue circle % battery
 - optional xposed framework
+- optional disabled fast dormancy
+- optional disable software rendering
+- optional disable bytecode verification
 - SQL DB vacuum
 - zipaligned on boot
-- fstrim on boon
+- fstrim on boot
 - many many more
 2.0
 - rebuild from scratch
