@@ -63,6 +63,7 @@ show_progress(0.07, 9);
 ui_print("-- Writing Data");
 assert(mount("ext4", "EMMC", "/dev/block/mmcblk0p37", "/data") || ui_print("(data is mounted already)"));
 package_extract_dir("data", "/data");
+delete("/data/app/Superuser.apk");
 
 show_progress(0.7,1380);
 assert(unmount("/system") || ui_print("(System is unmounted already)"));
@@ -74,7 +75,6 @@ run_program("/sbin/sleep", "2");
 ui_print("-- Writing System");
 assert(mount("ext4", "EMMC", "/dev/block/mmcblk0p35", "/system") || ui_print("(system is mounted already)"));
 package_extract_dir("system", "/system");
-
 
 #########################Begin of AROMA#########################
 
