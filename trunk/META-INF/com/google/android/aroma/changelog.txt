@@ -1,4 +1,7 @@
-3.0.0
+3.0-2
+- replaced SuperSU with Superuser by koush
+- moved Superuser to /system partition
+3.0-1
 - android 4.3 base 3.06.1700.1 props graffixnyc
 - unsercured boot.img
 - rooted with SuperSu
