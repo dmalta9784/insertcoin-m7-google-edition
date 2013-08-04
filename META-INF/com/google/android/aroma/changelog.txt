@@ -1,3 +1,5 @@
+3.0-4
+- changed the apks / jars optimization process.seems the old one isn't 100% compatible with 4.3
 3.0-3
 - fixed all root issues
 - fixed google now fc
