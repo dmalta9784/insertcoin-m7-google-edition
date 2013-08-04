@@ -1,5 +1,5 @@
 ﻿ini_set("rom_name", "InsertCoin Vanilla");
-ini_set("rom_version", "3.0-2");
+ini_set("rom_version", "3.0-3");
 ini_set("rom_author", "baadnewz");
 ini_set("rom_device", "HTC ONE");
 
@@ -82,7 +82,7 @@ checkbox(
   "Xposed Framework","",0,
   "Circle Blue % Battery","",0,
   "Volume Wake","",1,
-  "SuperSu","Replaces Superuser with Supersu",0
+  "SuperUser","Replaces SuperSU with Superuser by koush",0
 );
 
 
@@ -100,7 +100,9 @@ checkbox(
   "Google Plus",          "",  1,
   "Google Hangouts",      "",  0,
   "Google TTS",           "",  0,
-  "Google Chrome",        "",  0
+  "Google Chrome",        "",  0,
+  "Google Music",         "",  1,
+  "Google Drive",         "",  0
  
  );
  
