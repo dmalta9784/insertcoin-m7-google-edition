@@ -141,6 +141,13 @@ then
 
 endif;
 
+if 
+    file_getprop("/tmp/aroma-data/htchacks.prop","item.0.8") == "1"
+then
+    ui_print("-- Installing SuperSU");
+    package_extract_dir("additions/htchacks/supersu", "/system");
+
+endif;
 
 
 #######################GAPPS REMOVE################################

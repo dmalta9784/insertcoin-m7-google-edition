@@ -81,7 +81,8 @@ checkbox(
   "Disable Fast Dormancy","Uncheck only if you are 100% sure your carrier has FD",0,
   "Xposed Framework","",0,
   "Circle Blue % Battery","",0,
-  "Volume Wake","",1
+  "Volume Wake","",1,
+  "SuperSu","Replaces Superuser with Supersu",0
 );
 
 
