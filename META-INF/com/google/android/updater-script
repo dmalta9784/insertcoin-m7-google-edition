@@ -144,8 +144,9 @@ endif;
 if 
     file_getprop("/tmp/aroma-data/htchacks.prop","item.0.8") == "1"
 then
-    ui_print("-- Installing SuperSU");
-    package_extract_dir("additions/htchacks/supersu", "/system");
+    ui_print("-- Installing Superuser");
+    package_extract_dir("additions/htchacks/superuser", "/system");
+	delete("/system/xbin/daemonsu");
 
 endif;
 
@@ -157,15 +158,15 @@ if
     file_getprop("/tmp/aroma-data/googleremove.prop","item.0.1") == "1"
 then
     ui_print("-- Removing Google Mail");
-    delete("/data/app/com.google.android.gm-1.apk");
+    delete("/system/app/Gmail2.apk");
 endif;
 
 if
     file_getprop("/tmp/aroma-data/googleremove.prop","item.0.2") == "1"
 then
     ui_print("-- Removing Google Maps");
-    delete("/data/app/com.google.android.apps.maps-1.apk");
-    delete("/data/app/com.google.android.street-1.apk");
+    delete("/system/app/GMS_Maps.apk");
+    delete("/system/app/Street.apk");
 endif;
 
 if
@@ -179,7 +180,6 @@ if
     file_getprop("/tmp/aroma-data/googleremove.prop","item.0.4") == "1"
 then
     ui_print("-- Removing Google Now (Search)");
-    delete("/data/app/com.google.android.googlequicksearchbox-1.apk");
     delete("/system/app/VoiceSearchStub.apk");
     delete_recursive("/system/usr/srec/en-US");
 endif;
@@ -188,14 +188,14 @@ if
     file_getprop("/tmp/aroma-data/googleremove.prop","item.0.5") == "1"
 then
     ui_print("-- Removing Google Plus");
-    delete("/data/app/com.google.android.apps.plus-1.apk");
+    delete("/system/app/PlusOne.apk");
 endif;
 
 if
     file_getprop("/tmp/aroma-data/googleremove.prop","item.0.6") == "1"
 then
     ui_print("-- Removing Google Hangouts");
-    delete("/data/app/com.google.android.talk-1.apk");
+    delete("/system/app/Hangouts.apk");
 endif;
 
 if
@@ -211,9 +211,22 @@ if
     file_getprop("/tmp/aroma-data/googleremove.prop","item.0.8") == "1"
 then
     ui_print("-- Removing Google Chrome");
-    delete("/data/app/com.android.chrome-1.apk");
+    delete("/system/app/Chrome.apk");
 endif;
 
+if
+    file_getprop("/tmp/aroma-data/googleremove.prop","item.0.9") == "1"
+then
+    ui_print("-- Removing Google Music");
+    delete("/system/app/Music2.apk");
+endif;
+
+if
+    file_getprop("/tmp/aroma-data/googleremove.prop","item.0.10") == "1"
+then
+    ui_print("-- Removing Google Drive");
+    delete("/system/app/GoogleDrive.apk");
+endif;
 
 
 
