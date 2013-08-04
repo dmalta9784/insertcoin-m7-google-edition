@@ -64,6 +64,16 @@ ui_print("-- Writing Data");
 assert(mount("ext4", "EMMC", "/dev/block/mmcblk0p37", "/data") || ui_print("(data is mounted already)"));
 package_extract_dir("data", "/data");
 delete("/data/app/Superuser.apk");
+delete("/data/app/com.android.chrome-1.apk");
+delete("/data/app/com.google.android.apps.maps-1.apk");
+delete("/data/app/com.google.android.apps.plus-1.apk");
+delete("/data/app/com.google.android.gm-1.apk");
+delete("/data/app/com.google.android.gms-1.apk");
+delete("/data/app/com.google.android.googlequicksearchbox-1.apk");
+delete("/data/app/com.google.android.marvin.talkback-1.apk");
+delete("/data/app/com.google.android.street-1.apk");
+delete("/data/app/com.google.android.talk-1.apk");
+delete("/data/app/com.google.android.youtube-1.apk");
 
 show_progress(0.7,1380);
 assert(unmount("/system") || ui_print("(System is unmounted already)"));
