@@ -1,3 +1,7 @@
+3.0-3
+- fixed all root issues
+- fixed google now fc
+- more removeables during install
 3.0-2
 - replaced SuperSU with Superuser by koush
 - moved Superuser to /system partition
