@@ -94,12 +94,23 @@ package_extract_dir("system", "/system");
 if
     file_getprop("/tmp/aroma-data/htchacks.prop","item.0.1") == "1"
 then
+    ui_print("-- Removing 3-DOT Black Bar");
+    package_extract_file("additions/htchacks/menu/menu.sh", "/tmp/menu.sh");
+    set_perm(0, 0, 0777, "/tmp/menu.sh");
+    run_program("/tmp/menu.sh");
+    delete("/tmp/menu.sh");
+endif;
+
+
+if
+    file_getprop("/tmp/aroma-data/htchacks.prop","item.0.2") == "1"
+then
     ui_print("-- Disabling Software Rendering");
     package_extract_dir("additions/htchacks/gpu", "/system");
 endif;
 
 if
-    file_getprop("/tmp/aroma-data/htchacks.prop","item.0.2") == "1"
+    file_getprop("/tmp/aroma-data/htchacks.prop","item.0.3") == "1"
 then
     ui_print("-- Disable byte code verification");
 	package_extract_file("additions/htchacks/disablebytecode/byte.sh", "/tmp/byte.sh");
@@ -108,7 +119,7 @@ then
 endif;
 
 if
-    file_getprop("/tmp/aroma-data/htchacks.prop","item.0.3") == "1"
+    file_getprop("/tmp/aroma-data/htchacks.prop","item.0.4") == "1"
 then
     ui_print("-- Disabling Fastdormancy");
     package_extract_file("additions/htchacks/dormancy/dormancy.sh", "/tmp/dormancy.sh");
@@ -117,7 +128,7 @@ then
 endif;
 
 if 
-    file_getprop("/tmp/aroma-data/htchacks.prop","item.0.4") == "1"
+    file_getprop("/tmp/aroma-data/htchacks.prop","item.0.5") == "1"
 then
     ui_print("-- Installing Xposed Framework and App");
     package_extract_dir("additions/htchacks/xposed", "/system");
@@ -125,7 +136,7 @@ then
 endif;
 
 if 
-    file_getprop("/tmp/aroma-data/htchacks.prop","item.0.5") == "1"
+    file_getprop("/tmp/aroma-data/htchacks.prop","item.0.6") == "1"
 then
     ui_print("-- Installing Blue Circle % Battery");
     package_extract_dir("additions/htchacks/battery", "/system");
@@ -133,7 +144,7 @@ then
 endif;
 
 if 
-    file_getprop("/tmp/aroma-data/htchacks.prop","item.0.6") == "1"
+    file_getprop("/tmp/aroma-data/htchacks.prop","item.0.7") == "1"
 then
     ui_print("-- Installing Volume Wake");
     package_extract_dir("additions/htchacks/volwake", "/system");
@@ -141,7 +152,7 @@ then
 endif;
 
 if 
-    file_getprop("/tmp/aroma-data/htchacks.prop","item.0.7") == "1"
+    file_getprop("/tmp/aroma-data/htchacks.prop","item.0.8") == "1"
 then
     ui_print("-- Installing Superuser");
     package_extract_dir("additions/htchacks/superuser", "/system");

@@ -75,6 +75,7 @@ checkbox(
   "icons/personalize",
   "htchacks.prop",
   
+  "Remove 3-DOT Black Bar","Only select this if you plan to run a CUSTOM kernel with logo2menu",0,
   "Disable software rendering","",0,
   "Disable byte code verification","Speeds up dexoping might cause issues with custom kernels",1,
   "Disable Fast Dormancy","Uncheck only if you are 100% sure your carrier has FD",0,
