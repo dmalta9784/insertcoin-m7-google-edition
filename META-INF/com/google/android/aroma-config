@@ -75,8 +75,7 @@ checkbox(
   "icons/personalize",
   "htchacks.prop",
   
-  "Remove 3-DOT Black Bar","make sure you use a kernel with l2m",0,
-  "Disable software rendering","",1,
+  "Disable software rendering","",0,
   "Disable byte code verification","Speeds up dexoping might cause issues with custom kernels",1,
   "Disable Fast Dormancy","Uncheck only if you are 100% sure your carrier has FD",0,
   "Xposed Framework","",0,
