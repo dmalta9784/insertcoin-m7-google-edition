@@ -1,5 +1,8 @@
 3.0-4
 - changed the apks / jars optimization process.seems the old one isn't 100% compatible with 4.3
+- added failsafe for supersu / supseruser in case one flash a custom kernel without init.d support
+- cleaned up files
+- cleanup build.prop
 3.0-3
 - fixed all root issues
 - fixed google now fc
