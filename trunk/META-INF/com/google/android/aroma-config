@@ -54,19 +54,6 @@ selectbox(
 
 if prop("wipe.prop","selected.0") !="3" then
 
-
-
-selectbox(
-  "Do you want to ODEX ROM?",
-  "Please select:",
-  "icons/personalize",
-  "odex.prop",
-  
-  "No","ROM will remain DEODEXED",1,
-  "Yes","Don't choose these option if you plan to run Kustomizer",0
-);
-
-
 ########################HTC Hacks##############################
 
 checkbox(
