@@ -1,3 +1,8 @@
+3.0-5
+- updated play store to 4.3.10
+- improved workaround fix for su when custom kernel without init.d support is flashed (no need to reflash supersu zip when using faux kernel)
+- removed odexing options, causes issues
+- build kernel from sources, now system is completely writable, LZMA compression
 3.0-4
 - changed the apks / jars optimization process.seems the old one isn't 100% compatible with 4.3
 - added failsafe for supersu / supseruser in case one flash a custom kernel without init.d support
