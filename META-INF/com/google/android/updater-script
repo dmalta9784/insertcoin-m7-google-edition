@@ -354,25 +354,6 @@ run_program("/tmp/chattr", "+i", "/system/etc/install-recovery.sh");
 ui_print("@Installing Kernel");
 assert(package_extract_file("boot.img", "/tmp/boot.img"),
 run_program("/sbin/dd", "if=/tmp/boot.img", "of=/dev/block/mmcblk0p33"));
-
-
-########################Odexing Process#########################
-
-if
-    file_getprop("/tmp/aroma-data/odex.prop","selected.0") == "2"
-then
-package_extract_file("tools/busybox", "/tmp/busybox");
-set_perm(0, 0, 0777, "/tmp/busybox");
-package_extract_file("tools/dexopt-wrapper", "/tmp/dexopt-wrapper");
-set_perm(0, 0, 0777, "/tmp/dexopt-wrapper");
-package_extract_file("tools/zip", "/tmp/zip");
-set_perm(0, 0, 0777, "/tmp/zip");
-package_extract_file("tools/odex.sh", "/tmp/odex.sh");
-set_perm(0, 0, 0777, "/tmp/odex.sh"); 
-ui_print("@Starting ODEX process. It might take a while");
-assert(run_program("/tmp/odex.sh"));
-run_program("/sbin/sleep", "2");
-endif; 
 ########################Cleaning Process########################
 
     ui_print("@Erasing Cache & Dalvik-Cache");
