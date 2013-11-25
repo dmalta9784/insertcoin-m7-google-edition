@@ -52,6 +52,16 @@ selectbox(
   "Update only","",0
 );
 
+selectbox(
+  "Do you want to ODEX ROM?",
+  "Please select:",
+  "icons/personalize",
+  "odex.prop",
+  
+  "No","ROM will remain DEODEXED, useful if you plan to flash other mods at a later date",1,
+  "Yes","Use it if you wanna use ART",0
+);
+
 if prop("wipe.prop","selected.0") !="3" then
 
 ########################HTC Hacks##############################
