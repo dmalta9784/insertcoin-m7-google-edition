@@ -16,7 +16,7 @@ set_progress(0.01);
 set_progress(0.02);
 	ui_print("-- Erasing & formatting /system as EXT4");
     assert(unmount("/system") || ui_print("(System is unmounted already)"));
-    format("ext4", "EMMC", "/dev/block/mmcblk0p35", "0")
+    format("ext4", "EMMC", "/dev/block/mmcblk0p35", "0");
 set_progress(0.03);
     ui_print("-- Erasing & formatting /data as EXT4");
     assert(mount("ext4", "EMMC", "/dev/block/mmcblk0p37", "/data") || ui_print("(Data is mounted already)"));
