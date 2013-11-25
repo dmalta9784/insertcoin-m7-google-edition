@@ -231,8 +231,12 @@ symlink("toolbox", "/system/bin/cat", "/system/bin/cmp",
         "/system/bin/sync", "/system/bin/top", "/system/bin/uptime",
         "/system/bin/vmstat", "/system/bin/watchprops",
         "/system/bin/wipe");
+symlink("toolbox", "/system/bin/chcon", "/system/bin/clear",
+        "/system/bin/getenforce", "/system/bin/getsebool",
+        "/system/bin/load_policy", "/system/bin/restorecon",
+        "/system/bin/runcon", "/system/bin/setenforce",
+        "/system/bin/setsebool");	
 
-	
 ui_print("-- Creating additional symlinks");
 symlink("/system/bin/mksh", "/system/bin/sh");
 symlink("/system/fonts/Roboto-Regular.ttf","/system/fonts/DroidSans.ttf");
@@ -243,12 +247,9 @@ symlink("/system/xbin/ifconfig","/system/xbin/bb/ifconfig");
 symlink("/system/xbin/route","/system/xbin/bb/route");
 symlink("/system/lib/libGLESv2.so","/system/lib/libGLESv3.so");
 symlink("/system/lib/libxt_v02.so","/system/lib/libxt_native.so");
-symlink("dumpstate", "/system/bin/dumpcrash");
-symlink("debuggerd", "/system/bin/csview");
-symlink("mksh", "/system/bin/sh");
-symlink("toolbox", "/system/bin/touchinput");
-symlink("toolbox", "/system/bin/playback");
-symlink("/system/xbin/busybox", "/system/bin/busybox");
+
+	
+
 
 ui_print("-- Installing busybox");
 set_perm(0, 1000, 0755, "/system/xbin/busybox");
@@ -259,26 +260,38 @@ run_program("/system/xbin/busybox", "--install", "-s", "/system/xbin");
 set_progress(0.93);
 ui_print("-- Setting permissions");
 set_perm_recursive(0, 0, 0755, 0644, "/system");
-set_perm_recursive(0, 0, 0777, 0777, "/system/etc/init.d");
 set_perm_recursive(0, 2000, 0755, 0755, "/system/bin");
-set_perm(0, 3003, 06755, "/system/bin/ip");
+set_perm(0, 1000, 0750, "/system/bin/bma150_usr");
+set_perm(0, 1000, 0750, "/system/bin/iptables");
 set_perm(0, 3003, 02750, "/system/bin/netcfg");
-set_perm(0, 3004, 02755, "/system/bin/ping");
+set_perm(0, 0, 0755, "/system/bin/ping");
+set_perm(0, 2000, 06755, "/system/bin/reboot");
 set_perm(0, 2000, 06750, "/system/bin/run-as");
-set_perm_recursive(1002, 1002, 0755, 0440, "/system/etc/bluetooth");
-set_perm(0, 0, 0755, "/system/etc/bluetooth");
-set_perm(1000, 1000, 0640, "/system/etc/bluetooth/auto_pair_devlist.conf");
-set_perm(1002, 1002, 0440, "/system/etc/dbus.conf");
+set_perm(1000, 1000, 0755, "/system/bin/sysro");
+set_perm(1000, 1000, 0755, "/system/bin/sysrw");
+set_perm(0, 1000, 0750, "/system/bin/tc");
 set_perm(1014, 2000, 0550, "/system/etc/dhcpcd/dhcpcd-run-hooks");
-set_perm(0, 2000, 0550, "/system/etc/init.goldfish.sh");
+set_perm(1000, 3003, 0640, "/system/etc/gps.conf");
+set_perm(0, 0, 0400, "/system/etc/hsml.key");
 set_perm_recursive(0, 0, 0755, 0555, "/system/etc/ppp");
-set_perm_recursive(0, 2000, 0755, 0644, "/system/vendor");
-set_perm_recursive(0, 0, 0755, 0644, "/system/vendor/firmware");
+set_perm_recursive(0, 2000, 0755, 0755, "/system/etc/init.d");
+set_perm(0, 2000, 0755, "/system/vendor");
 set_perm(0, 2000, 0755, "/system/vendor/firmware");
 set_perm(0, 2000, 0755, "/system/vendor/lib");
+set_perm_recursive(0, 2000, 0755, 0644, "/system/vendor/lib/drm");
+set_perm(0, 0, 0644, "/system/vendor/lib/drm/libdrmwvmplugin.so");
 set_perm(0, 2000, 0755, "/system/vendor/lib/egl");
+set_perm_recursive(0, 2000, 0755, 0644, "/system/vendor/lib/mediadrm");
+set_perm(0, 0, 0644, "/system/vendor/lib/mediadrm/libwvdrmengine.so");
+set_perm(0, 2000, 0755, "/system/vendor/media");
+set_perm(0, 2000, 0755, "/system/vendor/pittpatt");
+set_perm(0, 2000, 0755, "/system/vendor/pittpatt/models");
+set_perm(0, 2000, 0755, "/system/vendor/pittpatt/models/detection");
+set_perm(0, 2000, 0755, "/system/vendor/pittpatt/models/detection/multi_pose_face_landmark_detectors.7");
+set_perm(0, 2000, 0755, "/system/vendor/pittpatt/models/detection/yaw_roll_face_detectors.6");
+set_perm_recursive(0, 2000, 0755, 0644, "/system/vendor/pittpatt/models/recognition");
+set_perm(0, 0, 0644, "/system/vendor/pittpatt/models/recognition/face.face.y0-y0-22-b-N.bin");
 set_perm_recursive(0, 2000, 0755, 0755, "/system/xbin");
-set_perm(0, 1000, 0755, "/system/xbin/busybox"); 
 set_perm(0, 2000, 0744, "/system/xbin/nc");
 set_perm(0, 0, 06755, "/system/xbin/su");
 set_perm(1000, 1000, 0771, "/data");
