@@ -1,3 +1,20 @@
+4.0-1
+- updated base to 3.58.1700.5
+- Android 4.4 (kitkat)
+- unsecured boot.img and rooted with koush superuser
+- init.d support
+- busybox
+- Advanced Power Menu
+- removed system write protection from kernel (kernel is build from sources)
+- deodexed
+- optimized
+- stripped debugging info
+- zipaligned
+- Optional Volume Wake
+- Optional Disable Fast Dormancy
+- Optional remove 3dot menu (you need a custom kernel with logo2menu if you use this option)
+- Optional Xposed Framework.
+- whatever i forgot
 3.0-5
 - updated play store to 4.3.10
 - improved workaround fix for su when custom kernel without init.d support is flashed (no need to reflash supersu zip when using faux kernel)
