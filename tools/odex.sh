@@ -38,6 +38,9 @@ REST="/system/framework/*.jar"
 # Odex apps
 APPS="/system/app/*.apk"
 
+# Odex priv-apps
+PRIV="/system/priv-app/*.apk"
+
 # Set up busybox symlinks
 for i in $(busybox --list)
 do
@@ -63,6 +66,14 @@ done
 
 # System apps
 for i in $APPS
+do
+	odex=`echo $i | sed -e 's/.apk/.odex/g'`
+	dexopt-wrapper $i $odex $BOOTCLASSPATH
+	zip -d $i classes.dex
+done
+
+# System priv-apps
+for i in $PRIV
 do
 	odex=`echo $i | sed -e 's/.apk/.odex/g'`
 	dexopt-wrapper $i $odex $BOOTCLASSPATH

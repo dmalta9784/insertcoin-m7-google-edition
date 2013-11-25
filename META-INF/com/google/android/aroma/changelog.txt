@@ -14,7 +14,8 @@
 - Optional Disable Fast Dormancy
 - Optional remove 3dot menu (you need a custom kernel with logo2menu if you use this option)
 - Optional Xposed Framework.
-- whatever i forgot
+- Optional Option to ODEX ROM (needs more testing though)
+- etc.
 3.0-5
 - updated play store to 4.3.10
 - improved workaround fix for su when custom kernel without init.d support is flashed (no need to reflash supersu zip when using faux kernel)
