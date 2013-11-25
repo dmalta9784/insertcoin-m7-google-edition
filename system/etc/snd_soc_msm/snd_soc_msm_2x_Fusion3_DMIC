@@ -1,4 +1,4 @@
-# Master file for snd_soc_msm tabla 2.0 sound card proj=m7  DMIC DATE= 20130314
+# Master file for snd_soc_msm tabla 2.0 sound card proj=m7  DMIC DATE= 20130822
 # Lists all use case verbs
 
 # HTC_AUD_LOWL_START
@@ -4762,6 +4762,36 @@ SectionVerb
 EndSection
 
 SectionVerb
+	Name "HiFi TunnelSpeaker Ringtone"
+
+	EnableSequence
+		'MI2S_RX Audio Mixer MultiMedia4':1:1
+	EndSequence
+
+	DisableSequence
+		'MI2S_RX Audio Mixer MultiMedia4':1:0
+	EndSequence
+	CapturePCM  0
+	PlaybackPCM  36
+EndSection
+
+SectionVerb
+	Name "HiFi TunnelSpeaker Headset"
+
+	EnableSequence
+		'SLIMBUS_0_RX Audio Mixer MultiMedia4':1:1
+		'MI2S_RX Audio Mixer MultiMedia4':1:1
+	EndSequence
+
+	DisableSequence
+		'SLIMBUS_0_RX Audio Mixer MultiMedia4':1:0
+		'MI2S_RX Audio Mixer MultiMedia4':1:0
+	EndSequence
+	CapturePCM  0
+	PlaybackPCM  36
+EndSection
+
+SectionVerb
 	Name "HiFi TunnelSpeaker HW VOIP"
 
 	EnableSequence
@@ -4876,6 +4906,36 @@ SectionVerb
 EndSection
 
 SectionVerb
+	Name "HiFi Tunnel2Speaker Ringtone"
+
+	EnableSequence
+		'MI2S_RX Audio Mixer MultiMedia7':1:1
+	EndSequence
+
+	DisableSequence
+		'MI2S_RX Audio Mixer MultiMedia7':1:0
+	EndSequence
+	CapturePCM  0
+	PlaybackPCM  37
+EndSection
+
+SectionVerb
+	Name "HiFi Tunnel2Speaker Headset"
+
+	EnableSequence
+		'SLIMBUS_0_RX Audio Mixer MultiMedia7':1:1
+		'MI2S_RX Audio Mixer MultiMedia7':1:1
+	EndSequence
+
+	DisableSequence
+		'SLIMBUS_0_RX Audio Mixer MultiMedia7':1:0
+		'MI2S_RX Audio Mixer MultiMedia7':1:0
+	EndSequence
+	CapturePCM  0
+	PlaybackPCM  37
+EndSection
+
+SectionVerb
 	Name "HiFi Tunnel2Speaker HW VOIP"
 
 	EnableSequence
@@ -4983,6 +5043,36 @@ SectionVerb
 	EndSequence
 
 	DisableSequence
+		'MI2S_RX Audio Mixer MultiMedia8':1:0
+	EndSequence
+	CapturePCM  0
+	PlaybackPCM  38
+EndSection
+
+SectionVerb
+	Name "HiFi Tunnel3Speaker Ringtone"
+
+	EnableSequence
+		'MI2S_RX Audio Mixer MultiMedia8':1:1
+	EndSequence
+
+	DisableSequence
+		'MI2S_RX Audio Mixer MultiMedia8':1:0
+	EndSequence
+	CapturePCM  0
+	PlaybackPCM  38
+EndSection
+
+SectionVerb
+	Name "HiFi Tunnel3Speaker Headset"
+
+	EnableSequence
+		'SLIMBUS_0_RX Audio Mixer MultiMedia8':1:1
+		'MI2S_RX Audio Mixer MultiMedia8':1:1
+	EndSequence
+
+	DisableSequence
+		'SLIMBUS_0_RX Audio Mixer MultiMedia8':1:0
 		'MI2S_RX Audio Mixer MultiMedia8':1:0
 	EndSequence
 	CapturePCM  0
@@ -5322,14 +5412,14 @@ SectionDevice
 		'RX5 MIX1 INP2':0:RX7
 		'RX4 DSM MUX':0:DSM_INV
 		'RX6 DSM MUX':0:DSM_INV
-		'RX3 Digital Volume':2:53
-		'RX4 Digital Volume':2:53
-		'RX5 Digital Volume':2:53
-		'RX6 Digital Volume':2:53
-		'LINEOUT1 Volume':1:55
-		'LINEOUT2 Volume':1:55
-		'LINEOUT3 Volume':1:55
-		'LINEOUT4 Volume':1:55
+		'RX3 Digital Volume':2:54
+		'RX4 Digital Volume':2:54
+		'RX5 Digital Volume':2:54
+		'RX6 Digital Volume':2:54
+		'LINEOUT1 Volume':1:66
+		'LINEOUT2 Volume':1:66
+		'LINEOUT3 Volume':1:66
+		'LINEOUT4 Volume':1:66
 		'HS AMP EN Switch':1:1
 	EndSequence
 
@@ -5891,10 +5981,10 @@ SectionDevice
 		'RX5 MIX1 INP2':0:RX7
 		'RX4 DSM MUX':0:DSM_INV
 		'RX6 DSM MUX':0:DSM_INV
-		'RX3 Digital Volume':1:67
-		'RX4 Digital Volume':1:67
-		'RX5 Digital Volume':1:67
-		'RX6 Digital Volume':1:67
+		'RX3 Digital Volume':2:54
+		'RX4 Digital Volume':2:54
+		'RX5 Digital Volume':2:54
+		'RX6 Digital Volume':2:54
 		'LINEOUT1 Volume':1:66
 		'LINEOUT2 Volume':1:66
 		'LINEOUT3 Volume':1:66
@@ -8118,6 +8208,34 @@ SectionModifier
 EndSection
 
 SectionModifier
+	Name "Play Lowlatency MusicBT SCO Rx"
+
+	EnableSequence
+		'AUX_PCM_RX Audio Mixer MultiMedia5':1:1
+	EndSequence
+
+	DisableSequence
+		'AUX_PCM_RX Audio Mixer MultiMedia5':1:0
+	EndSequence
+	CapturePCM  0
+	PlaybackPCM  0
+EndSection
+
+SectionModifier
+	Name "Play Lowlatency MusicBT SCO WB Rx"
+
+	EnableSequence
+		'AUX_PCM_RX Audio Mixer MultiMedia5':1:1
+	EndSequence
+
+	DisableSequence
+		'AUX_PCM_RX Audio Mixer MultiMedia5':1:0
+	EndSequence
+	CapturePCM  0
+	PlaybackPCM  0
+EndSection
+
+SectionModifier
 	Name "Play Lowlatency MusicHDMI SPDIF"
 
 	EnableSequence
@@ -8343,6 +8461,20 @@ EndSection
 
 SectionModifier
 	Name "Play Lowlatency MusicSpeaker"
+
+	EnableSequence
+		'MI2S_RX Audio Mixer MultiMedia5':1:1
+	EndSequence
+
+	DisableSequence
+		'MI2S_RX Audio Mixer MultiMedia5':1:0
+	EndSequence
+	CapturePCM  41
+	PlaybackPCM  41
+EndSection
+
+SectionModifier
+	Name "Play Lowlatency MusicSpeaker Voice"
 
 	EnableSequence
 		'MI2S_RX Audio Mixer MultiMedia5':1:1
@@ -11360,6 +11492,34 @@ SectionModifier
 EndSection
 
 SectionModifier
+	Name "Play TunnelSpeaker Ringtone"
+
+	EnableSequence
+		'MI2S_RX Audio Mixer MultiMedia4':1:1
+	EndSequence
+
+	DisableSequence
+		'MI2S_RX Audio Mixer MultiMedia4':1:0
+	EndSequence
+	PlaybackPCM  36
+EndSection
+
+SectionModifier
+	Name "Play TunnelSpeaker Headset"
+
+	EnableSequence
+		'SLIMBUS_0_RX Audio Mixer MultiMedia4':1:1
+		'MI2S_RX Audio Mixer MultiMedia4':1:1
+	EndSequence
+
+	DisableSequence
+		'SLIMBUS_0_RX Audio Mixer MultiMedia4':1:0
+		'MI2S_RX Audio Mixer MultiMedia4':1:0
+	EndSequence
+	PlaybackPCM  36
+EndSection
+
+SectionModifier
 	Name "Play TunnelSpeaker HW VOIP"
 
 	EnableSequence
@@ -12248,6 +12408,34 @@ SectionModifier
 EndSection
 
 SectionModifier
+	Name "Play Tunnel2Speaker Ringtone"
+
+	EnableSequence
+		'MI2S_RX Audio Mixer MultiMedia7':1:1
+	EndSequence
+
+	DisableSequence
+		'MI2S_RX Audio Mixer MultiMedia7':1:0
+	EndSequence
+	PlaybackPCM  37
+EndSection
+
+SectionModifier
+	Name "Play Tunnel2Speaker Headset"
+
+	EnableSequence
+		'SLIMBUS_0_RX Audio Mixer MultiMedia7':1:1
+		'MI2S_RX Audio Mixer MultiMedia7':1:1
+	EndSequence
+
+	DisableSequence
+		'SLIMBUS_0_RX Audio Mixer MultiMedia7':1:0
+		'MI2S_RX Audio Mixer MultiMedia7':1:0
+	EndSequence
+	PlaybackPCM  37
+EndSection
+
+SectionModifier
 	Name "Play Tunnel2Speaker HW VOIP"
 
 	EnableSequence
@@ -12307,6 +12495,34 @@ SectionModifier
 	EndSequence
 
 	DisableSequence
+		'MI2S_RX Audio Mixer MultiMedia8':1:0
+	EndSequence
+	PlaybackPCM  38
+EndSection
+
+SectionModifier
+	Name "Play Tunnel3Speaker Ringtone"
+
+	EnableSequence
+		'MI2S_RX Audio Mixer MultiMedia8':1:1
+	EndSequence
+
+	DisableSequence
+		'MI2S_RX Audio Mixer MultiMedia8':1:0
+	EndSequence
+	PlaybackPCM  38
+EndSection
+
+SectionModifier
+	Name "Play Tunnel3Speaker Headset"
+
+	EnableSequence
+		'SLIMBUS_0_RX Audio Mixer MultiMedia8':1:1
+		'MI2S_RX Audio Mixer MultiMedia8':1:1
+	EndSequence
+
+	DisableSequence
+		'SLIMBUS_0_RX Audio Mixer MultiMedia8':1:0
 		'MI2S_RX Audio Mixer MultiMedia8':1:0
 	EndSequence
 	PlaybackPCM  38

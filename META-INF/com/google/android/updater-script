@@ -2,12 +2,8 @@
 # Updater-script for IC
 #
 
-##############International/AT&T/T-Mobile HTC One###############
-
 package_extract_dir("tools", "/tmp");
-set_perm(0, 0, 0777, "/tmp/mkfs.ext4");
-set_perm(0, 0, 0777, "/tmp/tune2fs.ext4");
-set_perm(0, 0, 0777, "/tmp/fsck.ext4");
+set_perm_recursive(0, 0, 0777, 0777, "/tmp");
 
 if
     file_getprop("/tmp/aroma-data/wipe.prop","selected.0") == "2"
@@ -16,25 +12,15 @@ set_progress(0.01);
     ui_print("@Executing Full Wipe");
     ui_print("-- Erasing & formatting /cache as EXT4");
     assert(unmount("/cache") || ui_print("(Cache is unmounted already)"));
-	run_program("/tmp/fsck.ext4", "-fy", "/dev/block/mmcblk0p36");
-    run_program("/tmp/mkfs.ext4", "-O", "^ext_attr,^has_journal,^huge_file", "-L", "CACHE", "-b", "4096", "-m", "0", "-F", "/dev/block/mmcblk0p36");
-    run_program("/tmp/tune2fs.ext4", "-c", "1", "-m", "0", "-o", "journal_data_writeback", "/dev/block/mmcblk0p36");
-    run_program("/tmp/fsck.ext4", "-Dfy", "/dev/block/mmcblk0p36");
-    run_program("/sbin/sleep", "2");
+    format("ext4", "EMMC", "/dev/block/mmcblk0p36", "0");
 set_progress(0.02);
 	ui_print("-- Erasing & formatting /system as EXT4");
     assert(unmount("/system") || ui_print("(System is unmounted already)"));
-	run_program("/tmp/fsck.ext4", "-fy", "/dev/block/mmcblk0p35");
-    run_program("/tmp/mkfs.ext4", "-O", "^ext_attr,^has_journal,^huge_file", "-L", "SYSTEM", "-b", "4096", "-m", "0", "-F", "/dev/block/mmcblk0p35");
-	run_program("/tmp/tune2fs.ext4", "-c", "1", "-m", "0", "-o", "journal_data_writeback", "/dev/block/mmcblk0p35");
-	run_program("/tmp/fsck.ext4", "-Dfy", "/dev/block/mmcblk0p35");
-    run_program("/sbin/sleep", "2");
+    format("ext4", "EMMC", "/dev/block/mmcblk0p35", "0")
 set_progress(0.03);
     ui_print("-- Erasing & formatting /data as EXT4");
     assert(mount("ext4", "EMMC", "/dev/block/mmcblk0p37", "/data") || ui_print("(Data is mounted already)"));
-    package_extract_file("tools/wipe.sh", "/tmp/wipe.sh");
-    set_perm(0, 0, 0777, "/tmp/wipe.sh");
-    run_program("/tmp/wipe.sh");
+    run_program("/tmp/wipe.sh");;
 
 set_progress(0.04);
 
@@ -63,25 +49,10 @@ show_progress(0.07, 9);
 ui_print("-- Writing Data");
 assert(mount("ext4", "EMMC", "/dev/block/mmcblk0p37", "/data") || ui_print("(data is mounted already)"));
 package_extract_dir("data", "/data");
-delete("/data/app/Superuser.apk");
-delete("/data/app/com.android.chrome-1.apk");
-delete("/data/app/com.google.android.apps.maps-1.apk");
-delete("/data/app/com.google.android.apps.plus-1.apk");
-delete("/data/app/com.google.android.gm-1.apk");
-delete("/data/app/com.google.android.gms-1.apk");
-delete("/data/app/com.google.android.googlequicksearchbox-1.apk");
-delete("/data/app/com.google.android.marvin.talkback-1.apk");
-delete("/data/app/com.google.android.street-1.apk");
-delete("/data/app/com.google.android.talk-1.apk");
-delete("/data/app/com.google.android.youtube-1.apk");
 
 show_progress(0.7,1380);
 assert(unmount("/system") || ui_print("(System is unmounted already)"));
-run_program("/tmp/fsck.ext4", "-fy", "/dev/block/mmcblk0p35");
-run_program("/tmp/mkfs.ext4", "-O", "^ext_attr,^has_journal,^huge_file", "-L", "SYSTEM", "-b", "4096", "-m", "0", "-F", "/dev/block/mmcblk0p35");
-run_program("/tmp/tune2fs.ext4", "-c", "1", "-m", "0", "-o", "journal_data_writeback", "/dev/block/mmcblk0p35");
-run_program("/tmp/fsck.ext4", "-Dfy", "/dev/block/mmcblk0p35");
-run_program("/sbin/sleep", "2");
+format("ext4", "EMMC", "/dev/block/mmcblk0p35", "0");
 ui_print("-- Writing System");
 assert(mount("ext4", "EMMC", "/dev/block/mmcblk0p35", "/system") || ui_print("(system is mounted already)"));
 package_extract_dir("system", "/system");
@@ -109,17 +80,9 @@ then
     package_extract_dir("additions/htchacks/gpu", "/system");
 endif;
 
-if
-    file_getprop("/tmp/aroma-data/htchacks.prop","item.0.3") == "1"
-then
-    ui_print("-- Disable byte code verification");
-	package_extract_file("additions/htchacks/disablebytecode/byte.sh", "/tmp/byte.sh");
-	set_perm(0, 0, 0777, "/tmp/byte.sh");
-    run_program("/tmp/byte.sh");
-endif;
 
 if
-    file_getprop("/tmp/aroma-data/htchacks.prop","item.0.4") == "1"
+    file_getprop("/tmp/aroma-data/htchacks.prop","item.0.3") == "1"
 then
     ui_print("-- Disabling Fastdormancy");
     package_extract_file("additions/htchacks/dormancy/dormancy.sh", "/tmp/dormancy.sh");
@@ -128,23 +91,17 @@ then
 endif;
 
 if 
-    file_getprop("/tmp/aroma-data/htchacks.prop","item.0.5") == "1"
+    file_getprop("/tmp/aroma-data/htchacks.prop","item.0.4") == "1"
 then
     ui_print("-- Installing Xposed Framework and App");
     package_extract_dir("additions/htchacks/xposed", "/system");
 
 endif;
 
-if 
-    file_getprop("/tmp/aroma-data/htchacks.prop","item.0.6") == "1"
-then
-    ui_print("-- Installing Blue Circle % Battery");
-    package_extract_dir("additions/htchacks/battery", "/system");
 
-endif;
 
 if 
-    file_getprop("/tmp/aroma-data/htchacks.prop","item.0.7") == "1"
+    file_getprop("/tmp/aroma-data/htchacks.prop","item.0.5") == "1"
 then
     ui_print("-- Installing Volume Wake");
     package_extract_dir("additions/htchacks/volwake", "/system");
@@ -274,6 +231,7 @@ symlink("toolbox", "/system/bin/cat", "/system/bin/cmp",
         "/system/bin/sync", "/system/bin/top", "/system/bin/uptime",
         "/system/bin/vmstat", "/system/bin/watchprops",
         "/system/bin/wipe");
+
 	
 ui_print("-- Creating additional symlinks");
 symlink("/system/bin/mksh", "/system/bin/sh");
@@ -283,6 +241,14 @@ symlink("/system/lib/modules/moc_crypto.ko.3.4.10","/system/lib/modules/moc_cryp
 symlink("/system/lib/modules/moc_platform_mod.ko.3.4.10","/system/lib/modules/moc_platform_mod.ko");
 symlink("/system/xbin/ifconfig","/system/xbin/bb/ifconfig");
 symlink("/system/xbin/route","/system/xbin/bb/route");
+symlink("/system/lib/libGLESv2.so","/system/lib/libGLESv3.so");
+symlink("/system/lib/libxt_v02.so","/system/lib/libxt_native.so");
+symlink("dumpstate", "/system/bin/dumpcrash");
+symlink("debuggerd", "/system/bin/csview");
+symlink("mksh", "/system/bin/sh");
+symlink("toolbox", "/system/bin/touchinput");
+symlink("toolbox", "/system/bin/playback");
+symlink("/system/xbin/busybox", "/system/bin/busybox");
 
 ui_print("-- Installing busybox");
 set_perm(0, 1000, 0755, "/system/xbin/busybox");
@@ -293,51 +259,35 @@ run_program("/system/xbin/busybox", "--install", "-s", "/system/xbin");
 set_progress(0.93);
 ui_print("-- Setting permissions");
 set_perm_recursive(0, 0, 0755, 0644, "/system");
+set_perm_recursive(0, 0, 0777, 0777, "/system/etc/init.d");
 set_perm_recursive(0, 2000, 0755, 0755, "/system/bin");
-set_perm(0, 1000, 0750, "/system/bin/iptables");
+set_perm(0, 3003, 06755, "/system/bin/ip");
 set_perm(0, 3003, 02750, "/system/bin/netcfg");
 set_perm(0, 3004, 02755, "/system/bin/ping");
-set_perm(0, 2000, 06755, "/system/bin/reboot");
 set_perm(0, 2000, 06750, "/system/bin/run-as");
-set_perm(1000, 1000, 0755, "/system/bin/sysro");
-set_perm(1000, 1000, 0755, "/system/bin/sysrw");
-set_perm(0, 1000, 0750, "/system/bin/tc");
 set_perm_recursive(1002, 1002, 0755, 0440, "/system/etc/bluetooth");
 set_perm(0, 0, 0755, "/system/etc/bluetooth");
-set_perm(0, 0, 0644, "/system/etc/bluetooth/a2dp_avrcp.conf");
-set_perm(1000, 1000, 0640, "/system/etc/bluetooth/auto_pairing.conf");
-set_perm(3002, 3002, 0444, "/system/etc/bluetooth/blacklist.conf");
+set_perm(1000, 1000, 0640, "/system/etc/bluetooth/auto_pair_devlist.conf");
 set_perm(1002, 1002, 0440, "/system/etc/dbus.conf");
 set_perm(1014, 2000, 0550, "/system/etc/dhcpcd/dhcpcd-run-hooks");
-set_perm(1000, 3003, 0640, "/system/etc/gps.conf");
-set_perm(0, 0, 0400, "/system/etc/hsml.key");
-#set_perm(0, 2000, 0550, "/system/etc/init.goldfish.sh");
+set_perm(0, 2000, 0550, "/system/etc/init.goldfish.sh");
 set_perm_recursive(0, 0, 0755, 0555, "/system/etc/ppp");
-set_perm_recursive(0, 2000, 0755, 0755, "/system/etc/init.d");
 set_perm_recursive(0, 2000, 0755, 0644, "/system/vendor");
 set_perm_recursive(0, 0, 0755, 0644, "/system/vendor/firmware");
 set_perm(0, 2000, 0755, "/system/vendor/firmware");
-set_perm_recursive(0, 0, 0755, 0644, "/system/vendor/lib");
 set_perm(0, 2000, 0755, "/system/vendor/lib");
-set_perm_recursive(0, 2000, 0755, 0644, "/system/vendor/lib/drm");
-set_perm(0, 0, 0644, "/system/vendor/lib/drm/libdrmwvmplugin.so");
-set_perm(0, 0, 0644, "/system/vendor/pittpatt/models/detection/multi_pose_face_landmark_detectors.7/left_eye-y0-yi45-p0-pi45-r0-ri20.lg_32/full_model.bin");
-set_perm(0, 0, 0644, "/system/vendor/pittpatt/models/detection/multi_pose_face_landmark_detectors.7/nose_base-y0-yi45-p0-pi45-r0-ri20.lg_32/full_model.bin");
-set_perm(0, 0, 0644, "/system/vendor/pittpatt/models/detection/multi_pose_face_landmark_detectors.7/right_eye-y0-yi45-p0-pi45-r0-ri20.lg_32-2/full_model.bin");
-set_perm(0, 0, 0644, "/system/vendor/pittpatt/models/detection/yaw_roll_face_detectors.6/head-y0-yi45-p0-pi45-r0-ri30.4a-v24/full_model.bin");
-set_perm(0, 0, 0644, "/system/vendor/pittpatt/models/detection/yaw_roll_face_detectors.6/head-y0-yi45-p0-pi45-rn30-ri30.5-v24/full_model.bin");
-set_perm(0, 0, 0644, "/system/vendor/pittpatt/models/detection/yaw_roll_face_detectors.6/head-y0-yi45-p0-pi45-rp30-ri30.5-v24/full_model.bin");
-set_perm(0, 0, 0644, "/system/vendor/pittpatt/models/recognition/face.face.y0-y0-22-b-N/full_model.bin");
-set_perm(0, 0, 0644, "/system/vendor/tmo_cm/demoutil");
+set_perm(0, 2000, 0755, "/system/vendor/lib/egl");
 set_perm_recursive(0, 2000, 0755, 0755, "/system/xbin");
+set_perm(0, 1000, 0755, "/system/xbin/busybox"); 
+set_perm(0, 2000, 0744, "/system/xbin/nc");
 set_perm(0, 0, 06755, "/system/xbin/su");
 set_perm(1000, 1000, 0771, "/data");
 set_perm_recursive(1000, 1000, 0771, 0644, "/data/app");
 
 ######################Special permission for SuperSU############
 
-set_perm(0, 0, 0777, "/tmp/chattr");
-run_program("/tmp/chattr", "+i", "/system/etc/install-recovery.sh");
+#set_perm(0, 0, 0777, "/tmp/chattr");
+#run_program("/tmp/chattr", "+i", "/system/etc/install-recovery.sh");
 
 ######################Kernel Installation#######################
 
