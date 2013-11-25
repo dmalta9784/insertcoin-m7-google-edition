@@ -3,6 +3,10 @@
 sysrw
 
 
+###################################wp-mod.ko##################################
+
+insmod /system/lib/modules/wp_mod.ko
+
 ###################################Fstrim#######################################
 FS_LOGFILE=/data/fstrim.log
 
@@ -170,12 +174,14 @@ echo "Setting permissions"
 echo " ~ Permissions fixed ~ "
 
 ###########################################Umount debug filesystem#########################
-umount /sys/kernel/debug   
-echo " ~ Debug unmounted ~ "
+#umount /sys/kernel/debug   
+#echo " ~ Debug unmounted ~ "
 ###########################################Media Server Kill ##############################
-killall -9 android.process.media
-killall -9 mediaserver
-echo " ~ Media server killed~ "
+#killall -9 android.process.media
+#killall -9 mediaserver
+#echo " ~ Media server killed~ "
+############################################Flashlight######################################
+chmod 666 /sys/class/leds/flashlight/brightness
 ###########################################Run sysctl  ####################################
 sync
 sysctl -p

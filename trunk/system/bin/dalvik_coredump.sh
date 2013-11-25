@@ -5,10 +5,21 @@
 
 BASE=/data/core
 MAX_NUM_CORE_FILES=3
-pid=$1 # process id
-uid=$2 # user id
-ts=$3  # time stamp
+pid=$1          # process id
+uid=$2          # user id
+ts=$3           # time stamp
+rlimit_core=$4  # core file size soft resource limit
 LOG=$BASE/$ts.$pid.$uid.core.gz.log # Log path
+
+# The following section is used to determine whether it needs to
+# generate core file based on its rlimit value of core.
+#{
+
+if [ -z "$rlimit_core" -o "0" = "$rlimit_core" ]; then # 0 means disable coredump
+      exit 0
+fi
+
+#}
 
 # Read /system/build.prop to get the properties: ro.build.type, ro.aa.report
 old_ifs=$IFS
@@ -74,28 +85,10 @@ fi
 #}
 
 
-# The following section is used to determine whether it needs to
-# generate core file based on its rlimit value of core.
-#{
-while read line; do
-  i=0
-  for x in $line; do
-    field[$i]=$x
-    i=$((i + 1))
-  done
+/system/bin/mkdir /data/core #create core directory
+chmod /data/core 0766
+echo "Generating core files..." >> $LOG
 
-  if [ x"${field[1]}" = x"core" ]; then
-    i=$((i - 3)) # get "Soft Limit" field.
-    s=${field[$i]}
-    if [ "0" = "$s" ]; then # 0 means disable coredump
-      exit 0
-    fi
-    /system/bin/mkdir /data/core #create core directory
-    chmod /data/core 0766
-    echo "Generating core files..."
-  fi
-done < /proc/$pid/limits
-#}
 
 i=0
 for c in $BASE/*.gz; do
@@ -114,6 +107,7 @@ echo "pid = $pid" >> $LOG
 echo "uid = $uid" >> $LOG
 echo "victim = $victim" >> $LOG
 echo "i = $i" >> $LOG
+echo "rlimit core = $rlimit_core" >> $LOG
 
 # If the number core files > 3,
 # delete the core/process map/log files of the oldest dead process.
@@ -124,4 +118,4 @@ fi
 
 /system/bin/gzip -1 > $BASE/$ts.$pid.$uid.core.gz
 
-
+echo "Done..." >> $LOG
