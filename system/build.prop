@@ -210,8 +210,8 @@ dalvik.vm.checkjni=false
 profiler.force_disable_err_rpt=1
 profiler.force_disable_ulog=1
 #Improve Scrolling Cache
-persist.sys.scrollingcache=4
+#persist.sys.scrollingcache=4
 
 # Disable Bytecode Verification
-dalvik.vm.verify-bytecode=false
-dalvik.vm.dexopt-flags=v=n,o=v,m=y
+# dalvik.vm.verify-bytecode=false
+# dalvik.vm.dexopt-flags=v=n,o=v,m=y
