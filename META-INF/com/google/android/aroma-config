@@ -76,7 +76,8 @@ checkbox(
   "Disable software rendering","",0,
   "Disable Fast Dormancy","Uncheck only if you are 100% sure your carrier has FD",0,
   "Xposed Framework","",0,
-  "Volume Wake","",1
+  "Volume Wake","",1,
+  "GEL","Google Experience Launcher",1
 );
 
 
