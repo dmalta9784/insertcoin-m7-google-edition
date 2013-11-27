@@ -14,9 +14,10 @@ function precmd {
 
 	(( e )) && print -n "$e|"
 }
-PS1='$(precmd)$USER@$HOSTNAME:${PWD:-?} '"$PS1 "
-export HOME HOSTNAME MKSH SHELL TERM USER
-alias l='ls'
+ROM="InsertCoin"
+PS1='$(precmd)$ROM@${PWD:-?}'"$PS1 "
+export HOME HOSTNAME MKSH PS1 ROM SHELL TERM USER
+alias l='ls --color=never'
 alias la='l -a'
 alias ll='l -l'
 alias lo='l -a -l'
