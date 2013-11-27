@@ -1,7 +1,9 @@
 4.0-2
 - added translucent to lockscreen
-- added GEL option 
+- added GEL optional (if selected will remove the stock launcher) 
 - fixed odex script (still doesn't work with ART) but you can odex rom now if you like.
+- speed improvements
+- hopefully fixed issue for S-ON users (can't test though i'm S-OFF)
 4.0-1
 - updated base to 3.58.1700.5
 - Android 4.4 (kitkat)
