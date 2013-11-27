@@ -108,6 +108,14 @@ then
 
 endif;
 
+if 
+    file_getprop("/tmp/aroma-data/htchacks.prop","item.0.6") == "1"
+then
+    ui_print("-- Installing GEL");
+    package_extract_file("additions/launcher/GoogleHome.apk", "/system/app/GoogleHome.apk");
+
+endif;
+
 #######################GAPPS REMOVE################################
 
 
@@ -325,7 +333,7 @@ endif;
 
     ui_print("@Erasing Cache & Dalvik-Cache");
     assert(unmount("/cache") || ui_print("(cache is unmounted already)"));
-    format("ext4", "EMMC", "/dev/block/mmcblk0p36", "0", "cache");
+    format("ext4", "EMMC", "/dev/block/mmcblk0p36", "0", "/cache");
     delete_recursive("/data/dalvik-cache");
     delete_recursive("/data/resource-cache");
 
