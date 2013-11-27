@@ -47,7 +47,7 @@ ro.build.product=m7
 ro.build.description=3.58.1700.5 CL280886 release-keys
 ro.build.fingerprint=htc/m7_google/m7:4.4/KRT16S.H5/280886:user/release-keys
 ro.build.characteristics=nosdcard
-ro.product.version=InsertCoin GPE 4.0-1
+ro.product.version=InsertCoin GPE 4.0-2
 # end build properties
 #
 # from device/htc/m7/system.prop
