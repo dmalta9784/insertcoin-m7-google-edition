@@ -195,7 +195,47 @@ then
     delete("/system/app/GoogleDrive.apk");
 endif;
 
+if
+    file_getprop("/tmp/aroma-data/googleremove.prop","item.0.11") == "1"
+then
+    ui_print("-- Removing Google Currents");
+    delete("/system/app/GoogleCurrents.apk");
+endif;
 
+if
+    file_getprop("/tmp/aroma-data/googleremove.prop","item.0.12") == "1"
+then
+    ui_print("-- Removing Google Books");
+    delete("/system/app/Books.apk");
+endif;
+
+if
+    file_getprop("/tmp/aroma-data/googleremove.prop","item.0.13") == "1"
+then
+    ui_print("-- Removing Google Magazine");
+    delete("/system/app/Magazines.apk");
+endif;
+
+if
+    file_getprop("/tmp/aroma-data/googleremove.prop","item.0.14") == "1"
+then
+    ui_print("-- Removing Google Keep");
+    delete("/system/app/GoogleKeep.apk");
+endif;
+
+if
+    file_getprop("/tmp/aroma-data/googleremove.prop","item.0.15") == "1"
+then
+    ui_print("-- Removing Google Play Games");
+    delete("/system/app/PlayGames.apk");
+endif;
+
+if
+    file_getprop("/tmp/aroma-data/googleremove.prop","item.0.16") == "1"
+then
+    ui_print("-- Removing Google Play Movies");
+    delete("/system/app/Videos.apk");
+endif;
 
 ##########################VRTHEME###############################
 
@@ -207,6 +247,14 @@ endif;
 #set_perm(0, 0, 0755, "/sdcard/vrtheme/zipalign");
 
 #########################HTC HACK VR THEME ##############################################
+
+if
+    file_getprop("/tmp/aroma-data/htchacks.prop","item.0.7") == "1"
+then
+    ui_print("-- Stock battery %");
+    package_extract_dir("additions/htchacks/batterypercentage", "/sdcard/vrtheme/system");
+endif;
+
 
 
 ##########################VRTHEME-APPLY###############################

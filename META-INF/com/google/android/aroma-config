@@ -91,14 +91,20 @@ checkbox(
 
   "Google Mail",          "",  0,
   "Google Maps",          "",  0,
-  "Google News",          "",  1,
+  "Google News",          "",  0,
   "Google Now (Search)",  "",  0,
-  "Google Plus",          "",  1,
+  "Google Plus",          "",  0,
   "Google Hangouts",      "",  0,
   "Google TTS",           "",  0,
   "Google Chrome",        "",  0,
-  "Google Music",         "",  1,
-  "Google Drive",         "",  0
+  "Google Music",         "",  0,
+  "Google Drive",         "",  0,
+  "Google Currents",      "",  0,
+  "Google Books",         "",  0,
+  "Google Magazine",      "",  0,
+  "Google Keep",          "",  0,
+  "Google Play Games",    "",  0,
+  "Google Play Movies",   "",  0
  
  );
  
