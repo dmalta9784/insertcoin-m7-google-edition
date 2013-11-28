@@ -17,6 +17,27 @@ do
 done
 echo "Backups done for system apps"
 
+
+# repeat for /system/priv-app now
+
+
+[ -d /sdcard/vrtheme/system/priv-app ] && privapps=1 || privapps=0
+
+if [ "$privapps" -eq "1" ]; then
+echo "Processing /system/priv-app"
+busybox mkdir -p /sdcard/vrtheme-backup/system/priv-app
+busybox mkdir -p /sdcard/vrtheme/apply/system/priv-app
+cd /sdcard/vrtheme/system/priv-app
+for f in $(ls)
+do
+  echo "Processing $f"
+  cp /system/priv-app/$f /sdcard/vrtheme/apply/system/priv-app/
+  cp /system/priv-app/$f /sdcard/vrtheme-backup/system/priv-app/
+done
+echo "Backups done for privapps"
+fi
+
+
 # repeat for /system/framework now
 
 
@@ -65,6 +86,17 @@ do
 done
 echo "Patched system files"
 
+if [ "$privapps" -eq "1" ]; then
+cd /sdcard/vrtheme/apply/system/priv-app
+for f in $(ls)
+do
+  echo "Working on $f"
+  cd /sdcard/vrtheme/system/priv-app/$f/
+  /sdcard/vrtheme/zip -r /sdcard/vrtheme/apply/system/priv-app/$f *
+done
+echo "Patched system files"
+fi
+
 if [ "$dataapps" -eq "1" ]; then
 cd /sdcard/vrtheme/apply/data/app/
 for f in $(ls)
@@ -97,6 +129,16 @@ do
   /sdcard/vrtheme/zipalign -f 4 $f ./aligned/$f
 done
 
+if [ "$privapps" -eq "1" ]; then
+cd /sdcard/vrtheme/apply/system/priv-app/
+busybox mkdir aligned
+for f in $(ls)
+do
+  echo "Zipaligning $f"
+  /sdcard/vrtheme/zipalign -f 4 $f ./aligned/$f
+done
+fi
+
 if [ "$dataapps" -eq "1" ]; then
 cd /sdcard/vrtheme/apply/data/app/
 busybox mkdir aligned
@@ -125,6 +167,11 @@ if [ "$dataapps" -eq "1" ]; then
 cd /sdcard/vrtheme/apply/data/app/aligned/
 cp * /data/app/
 chmod 644 /data/app/*
+fi
+if [ "$privapps" -eq "1" ]; then
+cd /sdcard/vrtheme/apply/system/priv-app/aligned/
+cp * /system/priv-app/
+chmod 644 /system/priv-app/*
 fi
 if [ "$framework" -eq "1" ]; then
 cd /sdcard/vrtheme/apply/system/framework/aligned/
