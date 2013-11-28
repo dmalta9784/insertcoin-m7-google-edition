@@ -317,8 +317,7 @@ set_metadata("/system/xbin/su", "uid", 0, "gid", 0, "mode", 06755, "capabilities
 ######################Kernel Installation#######################
 
 ui_print("@Installing Kernel");
-assert(package_extract_file("boot.img", "/tmp/boot.img"),
-run_program("/sbin/dd", "if=/tmp/boot.img", "of=/dev/block/mmcblk0p33"));
+package_extract_file("boot.img", "/dev/block/mmcblk0p33");
 
 
 ########################Odexing Process#########################
