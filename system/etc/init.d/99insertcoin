@@ -5,7 +5,7 @@ sysrw
 
 ###################################wp-mod.ko##################################
 
-insmod /system/lib/modules/wp_mod.ko
+# insmod /system/lib/modules/wp_mod.ko
 
 ###################################Fstrim#######################################
 FS_LOGFILE=/data/fstrim.log
