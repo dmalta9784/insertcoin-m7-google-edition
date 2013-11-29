@@ -1,5 +1,5 @@
 ﻿ini_set("rom_name", "InsertCoin Vanilla");
-ini_set("rom_version", "4.0-2");
+ini_set("rom_version", "4.0-3");
 ini_set("rom_author", "baadnewz");
 ini_set("rom_device", "HTC ONE");
 

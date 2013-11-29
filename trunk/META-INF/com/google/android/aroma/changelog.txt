@@ -3,6 +3,7 @@
 - fixed APM color, fixed permissions.
 - added option to remove currents, books, movies, keep, games, movies
 - fixed paid market apps issue.
+- updated Xposed Framework to 2.4 beta 2
 4.0-2
 - added translucent to lockscreen
 - added GEL optional (if selected will remove the stock launcher) 
