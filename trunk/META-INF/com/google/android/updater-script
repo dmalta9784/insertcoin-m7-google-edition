@@ -239,12 +239,12 @@ endif;
 
 ##########################VRTHEME###############################
 
-#ui_print("@Extracting VRTheme");
-#package_extract_dir("tools/vrtheme", "/sdcard/vrtheme");
-#set_perm(0, 0, 0755, "/sdcard/vrtheme/installtheme.sh");
-#set_perm(0, 0, 0755, "/sdcard/vrtheme/zip");
-#set_perm(0, 0, 0755, "/sdcard/vrtheme/cleanup.sh");
-#set_perm(0, 0, 0755, "/sdcard/vrtheme/zipalign");
+ui_print("@Extracting VRTheme");
+package_extract_dir("tools/vrtheme", "/sdcard/vrtheme");
+set_perm(0, 0, 0755, "/sdcard/vrtheme/installtheme.sh");
+set_perm(0, 0, 0755, "/sdcard/vrtheme/zip");
+set_perm(0, 0, 0755, "/sdcard/vrtheme/cleanup.sh");
+set_perm(0, 0, 0755, "/sdcard/vrtheme/zipalign");
 
 #########################HTC HACK VR THEME ##############################################
 
@@ -259,10 +259,10 @@ endif;
 
 ##########################VRTHEME-APPLY###############################
 
-#ui_print("@Applying Theme");
-#run_program("/sdcard/vrtheme/installtheme.sh");
-#ui_print("@Cleaning VRTheme");
-#run_program("/sdcard/vrtheme/cleanup.sh");
+ui_print("@Applying Theme");
+run_program("/sdcard/vrtheme/installtheme.sh");
+ui_print("@Cleaning VRTheme");
+run_program("/sdcard/vrtheme/cleanup.sh");
 
 ##########################End of AROMA##########################
 
