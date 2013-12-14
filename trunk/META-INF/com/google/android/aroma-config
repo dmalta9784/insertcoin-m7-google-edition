@@ -1,5 +1,5 @@
 ﻿ini_set("rom_name", "InsertCoin Vanilla");
-ini_set("rom_version", "4.0-3");
+ini_set("rom_version", "5.0-1");
 ini_set("rom_author", "baadnewz");
 ini_set("rom_device", "HTC ONE");
 
@@ -77,7 +77,6 @@ checkbox(
   "Disable Fast Dormancy","Uncheck only if you are 100% sure your carrier has FD",0,
   "Xposed Framework","",0,
   "Volume Wake","",1,
-  "GEL","Google Experience Launcher",1,
   "Stock Battery %","",1
 );
 

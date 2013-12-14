@@ -108,15 +108,6 @@ then
 
 endif;
 
-if 
-    file_getprop("/tmp/aroma-data/htchacks.prop","item.0.6") == "1"
-then
-    ui_print("-- Installing GEL");
-    package_extract_file("additions/launcher/GoogleHome.apk", "/system/app/GoogleHome.apk");
-	delete("/system/priv-app/Launcher2.apk");
-
-endif;
-
 #######################GAPPS REMOVE################################
 
 
@@ -249,7 +240,7 @@ set_perm(0, 0, 0755, "/sdcard/vrtheme/zipalign");
 #########################HTC HACK VR THEME ##############################################
 
 if
-    file_getprop("/tmp/aroma-data/htchacks.prop","item.0.7") == "1"
+    file_getprop("/tmp/aroma-data/htchacks.prop","item.0.6") == "1"
 then
     ui_print("-- Stock battery %");
     package_extract_dir("additions/htchacks/batterypercentage", "/sdcard/vrtheme/system");
