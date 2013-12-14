@@ -1,3 +1,7 @@
+5.0-1
+- updated to 4.4.2
+- made GEL as default launcher
+- all other mods, tweaks, improvements ported
 4.0-3
 - added optional stock % battery
 - fixed APM color, fixed permissions.
