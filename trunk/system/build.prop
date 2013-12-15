@@ -197,20 +197,20 @@ net.bt.name=Android
 dalvik.vm.stack-trace-file=/data/anr/traces.txt
 
 # Disable HTC checkin services
-ro.config.nocheckin=1
-ro.config.htc.nocheckin=1
+#ro.config.nocheckin=1
+#ro.config.htc.nocheckin=1
 
 #Disable USB Debugging
-persist.adb.notify=0
+#persist.adb.notify=0
 
 # Disable sending data and logging
-ro.kernel.android.checkjni=0
-ro.kernel.checkjni=0
-dalvik.vm.checkjni=false
-profiler.force_disable_err_rpt=1
-profiler.force_disable_ulog=1
+#ro.kernel.android.checkjni=0
+#ro.kernel.checkjni=0
+#dalvik.vm.checkjni=false
+#profiler.force_disable_err_rpt=1
+#profiler.force_disable_ulog=1
 #Improve Scrolling Cache
-persist.sys.scrollingcache=4
+#persist.sys.scrollingcache=4
 
 # Disable Bytecode Verification
 dalvik.vm.verify-bytecode=false
