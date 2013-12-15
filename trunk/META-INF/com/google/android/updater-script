@@ -98,162 +98,27 @@ then
 
 endif;
 
-
-
-if 
-    file_getprop("/tmp/aroma-data/htchacks.prop","item.0.5") == "1"
-then
-    ui_print("-- Installing Volume Wake");
-    package_extract_dir("additions/htchacks/volwake", "/system");
-
-endif;
-
 #######################GAPPS REMOVE################################
 
 
-if
-    file_getprop("/tmp/aroma-data/googleremove.prop","item.0.1") == "1"
-then
-    ui_print("-- Removing Google Mail");
-    delete("/system/app/Gmail2.apk");
-endif;
-
-if
-    file_getprop("/tmp/aroma-data/googleremove.prop","item.0.2") == "1"
-then
-    ui_print("-- Removing Google Maps");
-    delete("/system/app/GMS_Maps.apk");
-    delete("/system/app/Street.apk");
-endif;
-
-if
-    file_getprop("/tmp/aroma-data/googleremove.prop","item.0.3") == "1"
-then
-    ui_print("-- Removing Google News");
-    delete("/system/app/GenieWidget.apk");
-endif;
-
-if
-    file_getprop("/tmp/aroma-data/googleremove.prop","item.0.4") == "1"
-then
-    ui_print("-- Removing Google Now (Search)");
-    delete("/system/app/Velvet.apk");
-	delete("/system/app/VoiceSearchStub.apk");
-    delete_recursive("/system/usr/srec/en-US");
-endif;
-
-if
-    file_getprop("/tmp/aroma-data/googleremove.prop","item.0.5") == "1"
-then
-    ui_print("-- Removing Google Plus");
-    delete("/system/app/PlusOne.apk");
-endif;
-
-if
-    file_getprop("/tmp/aroma-data/googleremove.prop","item.0.6") == "1"
-then
-    ui_print("-- Removing Google Hangouts");
-    delete("/system/app/Hangouts.apk");
-endif;
-
-if
-    file_getprop("/tmp/aroma-data/googleremove.prop","item.0.7") == "1"
-then
-    ui_print("-- Removing Google TTS");
-    delete("/system/app/GoogleTTS.apk");
-    delete("/system/lib/libspeexwrapper.so");
-    delete_recursive("/system/tts");
-endif;
-
-if
-    file_getprop("/tmp/aroma-data/googleremove.prop","item.0.8") == "1"
-then
-    ui_print("-- Removing Google Chrome");
-    delete("/system/app/Chrome.apk");
-endif;
-
-if
-    file_getprop("/tmp/aroma-data/googleremove.prop","item.0.9") == "1"
-then
-    ui_print("-- Removing Google Music");
-    delete("/system/app/Music2.apk");
-endif;
-
-if
-    file_getprop("/tmp/aroma-data/googleremove.prop","item.0.10") == "1"
-then
-    ui_print("-- Removing Google Drive");
-    delete("/system/app/GoogleDrive.apk");
-endif;
-
-if
-    file_getprop("/tmp/aroma-data/googleremove.prop","item.0.11") == "1"
-then
-    ui_print("-- Removing Google Currents");
-    delete("/system/app/GoogleCurrents.apk");
-endif;
-
-if
-    file_getprop("/tmp/aroma-data/googleremove.prop","item.0.12") == "1"
-then
-    ui_print("-- Removing Google Books");
-    delete("/system/app/Books.apk");
-endif;
-
-if
-    file_getprop("/tmp/aroma-data/googleremove.prop","item.0.13") == "1"
-then
-    ui_print("-- Removing Google Magazine");
-    delete("/system/app/Magazines.apk");
-endif;
-
-if
-    file_getprop("/tmp/aroma-data/googleremove.prop","item.0.14") == "1"
-then
-    ui_print("-- Removing Google Keep");
-    delete("/system/app/GoogleKeep.apk");
-endif;
-
-if
-    file_getprop("/tmp/aroma-data/googleremove.prop","item.0.15") == "1"
-then
-    ui_print("-- Removing Google Play Games");
-    delete("/system/app/PlayGames.apk");
-endif;
-
-if
-    file_getprop("/tmp/aroma-data/googleremove.prop","item.0.16") == "1"
-then
-    ui_print("-- Removing Google Play Movies");
-    delete("/system/app/Videos.apk");
-endif;
-
 ##########################VRTHEME###############################
 
-ui_print("@Extracting VRTheme");
-package_extract_dir("tools/vrtheme", "/sdcard/vrtheme");
-set_perm(0, 0, 0755, "/sdcard/vrtheme/installtheme.sh");
-set_perm(0, 0, 0755, "/sdcard/vrtheme/zip");
-set_perm(0, 0, 0755, "/sdcard/vrtheme/cleanup.sh");
-set_perm(0, 0, 0755, "/sdcard/vrtheme/zipalign");
+#ui_print("@Extracting VRTheme");
+#package_extract_dir("tools/vrtheme", "/sdcard/vrtheme");
+#set_perm(0, 0, 0755, "/sdcard/vrtheme/installtheme.sh");
+#set_perm(0, 0, 0755, "/sdcard/vrtheme/zip");
+#set_perm(0, 0, 0755, "/sdcard/vrtheme/cleanup.sh");
+#set_perm(0, 0, 0755, "/sdcard/vrtheme/zipalign");
 
-#########################HTC HACK VR THEME ##############################################
-
-if
-    file_getprop("/tmp/aroma-data/htchacks.prop","item.0.6") == "1"
-then
-    ui_print("-- Stock battery %");
-    package_extract_dir("additions/htchacks/batterypercentage", "/sdcard/vrtheme/system");
-endif;
 
 
 
 ##########################VRTHEME-APPLY###############################
 
-ui_print("@Applying Theme");
-run_program("/sdcard/vrtheme/installtheme.sh");
-ui_print("@Cleaning VRTheme");
-run_program("/sdcard/vrtheme/cleanup.sh");
+#ui_print("@Applying Theme");
+#run_program("/sdcard/vrtheme/installtheme.sh");
+#ui_print("@Cleaning VRTheme");
+#run_program("/sdcard/vrtheme/cleanup.sh");
 
 ##########################End of AROMA##########################
 

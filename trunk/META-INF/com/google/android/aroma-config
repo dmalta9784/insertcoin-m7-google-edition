@@ -75,38 +75,10 @@ checkbox(
   "Remove 3-DOT Black Bar","Only select this if you plan to run a CUSTOM kernel with logo2menu",0,
   "Disable software rendering","",0,
   "Disable Fast Dormancy","Uncheck only if you are 100% sure your carrier has FD",0,
-  "Xposed Framework","",0,
-  "Volume Wake","",1,
-  "Stock Battery %","",1
+  "Xposed Framework","",0
+
 );
 
-
-######################################################
-checkbox(
-  "Remove Google Apps",
-  "Please select which Google Apps you want to remove:",
-  "icons/apps",
-  "googleremove.prop",
-
-  "Google Mail",          "",  0,
-  "Google Maps",          "",  0,
-  "Google News",          "",  0,
-  "Google Now (Search)",  "",  0,
-  "Google Plus",          "",  0,
-  "Google Hangouts",      "",  0,
-  "Google TTS",           "",  0,
-  "Google Chrome",        "",  0,
-  "Google Music",         "",  0,
-  "Google Drive",         "",  0,
-  "Google Currents",      "",  0,
-  "Google Books",         "",  0,
-  "Google Magazine",      "",  0,
-  "Google Keep",          "",  0,
-  "Google Play Games",    "",  0,
-  "Google Play Movies",   "",  0
- 
- );
- 
 
 
 endif;
